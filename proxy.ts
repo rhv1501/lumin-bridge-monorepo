@@ -11,7 +11,7 @@ function isPublicFile(pathname: string) {
 
 function rewriteToPortal(
   req: NextRequest,
-  portalBase: "/admin" | "/buyer" | "/factory",
+  portalBase: "/admin" | "/buyer",
 ) {
   const { pathname, search } = req.nextUrl;
 
@@ -58,22 +58,12 @@ export function proxy(req: NextRequest) {
     return rewriteToPortal(req, "/admin");
   }
 
-  if (host.startsWith("factory.")) {
-    return rewriteToPortal(req, "/factory");
-  }
-
   if (host.startsWith("buyer.")) {
     return rewriteToPortal(req, "/buyer");
   }
 
   // Apex domain (e.g. domain.com) defaults to Buyer portal.
-  // Only normalize the root and legacy /login so other routes keep working.
-  const { pathname } = req.nextUrl;
-  if (pathname === "/" || pathname === "/login") {
-    return rewriteToPortal(req, "/buyer");
-  }
-
-  return NextResponse.next();
+  return rewriteToPortal(req, "/buyer");
 }
 
 export const config = {

@@ -27,13 +27,11 @@ type PortalShellClientProps = {
 
 const roleBadge: Record<string, string> = {
   admin: "bg-violet-100 text-violet-700",
-  factory: "bg-amber-100  text-amber-700",
   buyer: "bg-emerald-100 text-emerald-700",
 };
 
 const roleLabel: Record<string, string> = {
   admin: "Admin",
-  factory: "Factory",
   buyer: "Buyer",
 };
 
