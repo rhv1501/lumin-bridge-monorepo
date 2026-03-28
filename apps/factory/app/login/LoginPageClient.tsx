@@ -2,5 +2,5 @@
 import PortalLoginClient from "@/login/PortalLoginClient";
 
 export default function LoginPageClient() {
-  return <PortalLoginClient role="buyer" />;
+  return <PortalLoginClient />;
 }

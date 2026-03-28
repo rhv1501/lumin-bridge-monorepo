@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import type { RefreshPayload } from "../../lib/realtimeRefresh";
+import type { RefreshPayload } from "@luminbridge/db";
 
 export function useRealtimeData<T>(
   userId: number,
