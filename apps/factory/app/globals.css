@@ -1,0 +1,16 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap";
+
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-zinc-950 font-sans text-zinc-50 antialiased;
+  }
+}
+
+/* Custom utility used by product grids */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
