@@ -35,7 +35,7 @@ export const ReviewModal = ({ order, onClose, onSubmit }: ReviewModalProps) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-white dark:bg-zinc-900/40 backdrop-blur-sm"
       />
       <motion.div 
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -47,9 +47,9 @@ export const ReviewModal = ({ order, onClose, onSubmit }: ReviewModalProps) => {
         <Card className="p-8 border-0 shadow-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2.5rem]">
           <button 
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="absolute top-6 right-6 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-colors"
           >
-            <X size={18} className="text-zinc-400" />
+            <X size={18} className="text-zinc-500 dark:text-zinc-400" />
           </button>
 
           <div className="mb-8">
@@ -93,7 +93,7 @@ export const ReviewModal = ({ order, onClose, onSubmit }: ReviewModalProps) => {
                 onChange={(e) => setComment(e.target.value)}
                 required
                 placeholder="Describe your satisfaction with the product and service..."
-                className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-white/5 focus:border-zinc-900 dark:focus:border-white transition-all h-32 resize-none text-sm leading-relaxed"
+                className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-white/5 focus:border-zinc-300 dark:border-zinc-900 dark:focus:border-white transition-all h-32 resize-none text-sm leading-relaxed"
               />
             </div>
 

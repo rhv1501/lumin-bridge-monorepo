@@ -91,7 +91,7 @@ export const ProductTable = ({ products, isLoading, settings, onUpdate, onDelete
               </tr>
             ) : (
               products.map(p => (
-                <tr key={p.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors group">
+                <tr key={p.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors group">
                   <td className="p-6">
                     <div className="flex items-center gap-3">
                       {p.photo && <img src={p.photo} alt={p.name} className="w-10 h-10 object-cover rounded-xl shadow-sm" />}
@@ -103,14 +103,14 @@ export const ProductTable = ({ products, isLoading, settings, onUpdate, onDelete
                       <div className="flex items-center text-amber-500 font-bold text-xs">
                         <Star size={12} className="fill-current mr-1" />
                         {p.average_rating.toFixed(1)}
-                        <span className="text-zinc-400 font-normal ml-1">({p.review_count})</span>
+                        <span className="text-zinc-500 dark:text-zinc-400 font-normal ml-1">({p.review_count})</span>
                       </div>
                     ) : (
-                      <span className="text-zinc-400 text-xs italic">Brand New</span>
+                      <span className="text-zinc-500 dark:text-zinc-400 text-xs italic">Brand New</span>
                     )}
                   </td>
                   <td className="p-6 text-sm text-zinc-500 font-medium">{p.factory_company}</td>
-                  <td className="p-6 font-mono text-sm text-zinc-400">¥{p.factory_price_cny}</td>
+                  <td className="p-6 font-mono text-sm text-zinc-500 dark:text-zinc-400">¥{p.factory_price_cny}</td>
                   <td className="p-6 font-mono text-sm font-bold text-zinc-900">
                     {editingProduct === p.id ? (
                       <Input 

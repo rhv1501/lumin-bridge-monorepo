@@ -104,18 +104,18 @@ export const Login = ({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 font-sans text-zinc-50 antialiased">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4 font-sans text-zinc-900 dark:text-zinc-50 antialiased">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-zinc-900 text-white rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white rounded-2xl mb-4">
             <Globe size={32} />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-white">LuminaBridge</h1>
-          <p className="text-zinc-400 mt-2 italic">
+          <h1 className="text-3xl font-serif font-bold text-zinc-950 dark:text-white">LuminaBridge</h1>
+          <p className="text-zinc-500 dark:text-zinc-400 mt-2 italic">
             {role === "admin"
               ? "Admin Portal"
               : role === "factory"
@@ -126,14 +126,14 @@ export const Login = ({
 
         <Card className="p-6 sm:p-8">
           {allowSignup && (
-            <div className="flex bg-zinc-900 p-1.5 rounded-2xl mb-8 border border-zinc-800">
+            <div className="flex bg-white dark:bg-zinc-900 p-1.5 rounded-2xl mb-8 border border-zinc-200 dark:border-zinc-800">
               <button
                 onClick={() => setIsSignup(false)}
                 className={cn(
                   "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300",
                   !isSignup
                     ? "bg-white text-zinc-950 shadow-lg shadow-black/20"
-                    : "text-zinc-500 hover:text-zinc-300",
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-300",
                 )}
               >
                 Sign In
@@ -144,7 +144,7 @@ export const Login = ({
                   "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300",
                   isSignup
                     ? "bg-white text-zinc-950 shadow-lg shadow-black/20"
-                    : "text-zinc-500 hover:text-zinc-300",
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-300",
                 )}
               >
                 Sign Up
@@ -250,7 +250,7 @@ export const Login = ({
           </form>
 
           {(showPortalSwitch ?? !lockedRole) && (
-            <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
+            <div className="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800 text-center">
               <button
                 onClick={() => {
                   if (lockedRole) return;
@@ -258,7 +258,7 @@ export const Login = ({
                   setIsSignup(false);
                   setError("");
                 }}
-                className="text-sm text-zinc-500 hover:text-white underline decoration-zinc-800 underline-offset-4"
+                className="text-sm text-zinc-500 hover:text-zinc-950 dark:text-white underline decoration-zinc-800 underline-offset-4"
               >
                 {role === "buyer"
                   ? "Are you a factory? Go to Factory Portal"
@@ -268,7 +268,7 @@ export const Login = ({
           )}
 
           {showDemoAccounts && !isSignup && (
-            <div className="mt-6 pt-6 border-t border-zinc-800">
+            <div className="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
               <p className="text-xs text-zinc-500 text-center uppercase tracking-widest font-bold">
                 Demo Accounts
               </p>
@@ -280,7 +280,7 @@ export const Login = ({
                       setPassword("demo12345");
                       if (!lockedRole) setRole("admin");
                     }}
-                    className="text-xs text-zinc-400 hover:text-white text-left px-2 py-1.5 rounded-lg hover:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
+                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:text-white text-left px-2 py-1.5 rounded-lg hover:bg-white dark:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
                   >
                     Admin: admin@lumina.com
                   </button>
@@ -292,7 +292,7 @@ export const Login = ({
                       setPassword("demo12345");
                       if (!lockedRole) setRole("factory");
                     }}
-                    className="text-xs text-zinc-400 hover:text-white text-left px-2 py-1.5 rounded-lg hover:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
+                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:text-white text-left px-2 py-1.5 rounded-lg hover:bg-white dark:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
                   >
                     Factory: factory@china.com
                   </button>
@@ -304,7 +304,7 @@ export const Login = ({
                       setPassword("demo12345");
                       if (!lockedRole) setRole("buyer");
                     }}
-                    className="text-xs text-zinc-400 hover:text-white text-left px-2 py-1.5 rounded-lg hover:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
+                    className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:text-white text-left px-2 py-1.5 rounded-lg hover:bg-white dark:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
                   >
                     Buyer: buyer@india.com
                   </button>

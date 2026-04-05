@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { User as UserType, Order } from "@luminbridge/types";
 import NotificationBell from "@/components/NotificationBell";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type PortalShellClientProps = {
   user: UserType;
@@ -117,13 +118,13 @@ export default function PortalShellClient({
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50">
+    <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
       {/* ── Navbar ── */}
-      <nav className="bg-zinc-900/50 backdrop-blur-xl border-b border-zinc-800/50 sticky top-0 z-40">
+      <nav className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800/50 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex flex-nowrap items-center justify-between gap-3">
           {/* Logo */}
           <div className="flex items-center gap-2 flex-shrink-1 min-w-0">
-            <div className="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-black dark:bg-zinc-900 text-white rounded-lg flex items-center justify-center flex-shrink-0">
               <Globe size={18} />
             </div>
             <span className="font-serif font-bold text-xl tracking-tight truncate sm:whitespace-nowrap">
@@ -133,6 +134,7 @@ export default function PortalShellClient({
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             {/* Navbar always shows notifications */}
             <NotificationBell
               userId={user.id}
@@ -143,8 +145,8 @@ export default function PortalShellClient({
 
             {/* Desktop: everything visible inline, no hamburger, no sidebar */}
             <div className="hidden md:flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900 rounded-full border border-zinc-800">
-                <div className="w-7 h-7 rounded-full bg-zinc-900 text-white flex items-center justify-center text-[11px] font-bold flex-shrink-0 select-none">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-900 rounded-full border border-zinc-200 dark:border-zinc-800">
+                <div className="w-7 h-7 rounded-full bg-black dark:bg-zinc-900 text-white flex items-center justify-center text-[11px] font-bold flex-shrink-0 select-none">
                   {userInitials}
                 </div>
                 <div className="flex flex-col min-w-0">
@@ -161,14 +163,14 @@ export default function PortalShellClient({
 
               <button
                 onClick={() => setChangePwdOpen(true)}
-                className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors focus:outline-none rounded-lg px-2 py-1"
+                className="text-sm text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-900 dark:text-zinc-100 transition-colors focus:outline-none rounded-lg px-2 py-1"
               >
                 Change Password
               </button>
 
               <button
                 onClick={onLogout}
-                className="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:ring-offset-2 rounded-lg px-2 py-1"
+                className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-900/10 dark:focus:ring-zinc-100/10 focus:ring-offset-2 rounded-lg px-2 py-1"
               >
                 <LogOut size={16} />
                 <span className="font-medium">Logout</span>
@@ -179,7 +181,7 @@ export default function PortalShellClient({
             <button
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
-              className="p-2 text-zinc-400 hover:text-white transition-colors focus:outline-none rounded-lg lg:hidden"
+              className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-950 dark:text-white transition-colors focus:outline-none rounded-lg lg:hidden"
             >
               <Menu size={22} />
             </button>
@@ -209,31 +211,31 @@ export default function PortalShellClient({
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
                transition={{ type: "spring", damping: 28, stiffness: 240 }}
-               className="fixed top-0 right-0 h-full w-80 bg-zinc-950 border-l border-zinc-800 z-50 lg:hidden flex flex-col"
+               className="fixed top-0 right-0 h-full w-80 bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 z-50 lg:hidden flex flex-col"
              >
                {/* Header */}
-               <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-900 flex-shrink-0">
-                 <span className="font-serif font-bold text-base text-zinc-100 uppercase tracking-widest opacity-50">
+               <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-900 flex-shrink-0">
+                 <span className="font-serif font-bold text-base text-zinc-950 dark:text-zinc-100 uppercase tracking-widest opacity-50">
                    Menu
                  </span>
                  <button
                    onClick={() => setDrawerOpen(false)}
                    aria-label="Close menu"
-                   className="p-1.5 text-zinc-400 hover:text-white transition-colors rounded-lg focus:outline-none"
+                   className="p-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-950 dark:text-white transition-colors rounded-lg focus:outline-none"
                  >
                    <X size={20} />
                  </button>
                </div>
 
               {/* User card */}
-               <div className="px-6 py-6 border-b border-zinc-900">
+               <div className="px-6 py-6 border-b border-zinc-300 dark:border-zinc-900">
                  {/* Avatar + name row */}
                  <div className="flex items-center gap-4 mb-4">
-                   <div className="w-12 h-12 rounded-2xl bg-zinc-900 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 select-none border border-zinc-800">
+                   <div className="w-12 h-12 rounded-2xl bg-black dark:bg-zinc-900 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 select-none border border-zinc-200 dark:border-zinc-800">
                      {userInitials}
                    </div>
                    <div className="min-w-0">
-                     <p className="text-sm font-semibold text-zinc-100 truncate leading-tight">
+                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate leading-tight">
                        {user.company_name || user.email}
                      </p>
                      {user.company_name && (
@@ -268,11 +270,11 @@ export default function PortalShellClient({
                        className={cn(
                          "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200",
                          activeTab === tab.id
-                           ? "bg-zinc-900 text-white shadow-lg shadow-black/20"
-                           : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/50"
+                           ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-lg shadow-black/20"
+                           : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100 hover:bg-white dark:bg-zinc-900/50"
                        )}
                      >
-                       <tab.icon size={18} className={activeTab === tab.id ? "text-white" : "text-zinc-500"} />
+                       <tab.icon size={18} className={activeTab === tab.id ? "text-zinc-950 dark:text-white" : "text-zinc-500"} />
                        <span>{tab.label}</span>
                        {tab.badge && (
                          <span className="ml-auto w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
@@ -286,7 +288,7 @@ export default function PortalShellClient({
                {(user.mobile_number ||
                  user.wechat_id ||
                  user.whatsapp_number) && (
-                 <div className="px-6 py-6 space-y-3 border-t border-zinc-900">
+                 <div className="px-6 py-6 space-y-3 border-t border-zinc-300 dark:border-zinc-900">
                    {user.mobile_number && (
                      <InfoLine label="Mobile" value={user.mobile_number} />
                    )}
@@ -302,13 +304,13 @@ export default function PortalShellClient({
               <div className="flex-1" />
 
                {/* Sign out */}
-               <div className="px-6 pb-8 pt-6 border-t border-zinc-900 bg-zinc-900/30">
+               <div className="px-6 pb-8 pt-6 border-t border-zinc-300 dark:border-zinc-900 bg-white dark:bg-zinc-900/30">
                  <button
                    onClick={() => {
                      setDrawerOpen(false);
                      setChangePwdOpen(true);
                    }}
-                   className="w-full mb-3 py-3 rounded-2xl border border-zinc-800 text-zinc-400 text-sm font-semibold hover:text-white hover:bg-zinc-800 transition-all active:scale-[0.98]"
+                   className="w-full mb-3 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-semibold hover:text-zinc-950 dark:text-white hover:bg-zinc-100 dark:bg-zinc-800 transition-all active:scale-[0.98]"
                  >
                    Change password
                  </button>
@@ -344,7 +346,7 @@ export default function PortalShellClient({
               exit={{ opacity: 0, y: 16 }}
               className="fixed z-50 inset-0 flex items-center justify-center p-4"
             >
-              <div className="w-full max-w-md bg-zinc-900 rounded-xl border border-zinc-800 p-5 space-y-3">
+              <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 space-y-3">
                 <h3 className="text-lg font-semibold">Change Password</h3>
                 {user.must_change_password && (
                   <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded p-2">
@@ -393,7 +395,7 @@ export default function PortalShellClient({
                   </button>
                   <button
                     type="button"
-                    className="flex-1 py-2 rounded-lg bg-zinc-900 text-white text-sm disabled:opacity-60"
+                    className="flex-1 py-2 rounded-lg bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white text-sm disabled:opacity-60"
                     onClick={submitPasswordChange}
                     disabled={changingPassword}
                   >
@@ -408,7 +410,7 @@ export default function PortalShellClient({
 
        <main className="max-w-7xl mx-auto px-4 sm:px-6 mt-8">{children}</main>
 
-      <footer className="py-12 border-t border-zinc-800 mt-20">
+      <footer className="py-12 border-t border-zinc-200 dark:border-zinc-800 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 opacity-50">
             <Globe size={16} />
@@ -416,7 +418,7 @@ export default function PortalShellClient({
               LuminaBridge Global
             </span>
           </div>
-          <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-zinc-400">
+          <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             <a href="#" className="hover:text-zinc-900 transition-colors">
               Terms
             </a>
@@ -427,7 +429,7 @@ export default function PortalShellClient({
               Support
             </a>
           </div>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             © 2026 LuminaBridge B2B. All rights reserved.
           </p>
         </div>
@@ -442,7 +444,7 @@ export default function PortalShellClient({
        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 w-16 flex-shrink-0">
          {label}
        </span>
-       <span className="text-sm text-zinc-300 truncate">{value}</span>
+       <span className="text-sm text-zinc-700 dark:text-zinc-300 truncate">{value}</span>
      </div>
    );
  }

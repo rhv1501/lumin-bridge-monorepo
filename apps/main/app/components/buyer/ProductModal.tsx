@@ -63,7 +63,7 @@ export const ProductModal = ({ product, onClose, onConfirm }: ProductModalProps)
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-white dark:bg-zinc-900/40 backdrop-blur-sm"
       />
       <motion.div 
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -74,7 +74,7 @@ export const ProductModal = ({ product, onClose, onConfirm }: ProductModalProps)
         <Card className="p-8 sm:p-10 shadow-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2.5rem]">
           <button 
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+            className="absolute top-6 right-6 p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 rounded-full transition-colors"
           >
             <X size={20} />
           </button>
@@ -111,14 +111,14 @@ export const ProductModal = ({ product, onClose, onConfirm }: ProductModalProps)
                 <div className="flex items-center gap-4">
                   <button 
                     onClick={() => setQuantity(Math.max(product.moq || 1, quantity - 1))}
-                    className="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center hover:bg-white dark:hover:bg-zinc-800 transition-all active:scale-95"
+                    className="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center hover:bg-white dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-all active:scale-95"
                   >
                     <Minus size={16} />
                   </button>
                   <span className="text-2xl font-mono font-bold w-12 text-center">{quantity}</span>
                   <button 
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center hover:bg-white dark:hover:bg-zinc-800 transition-all active:scale-95"
+                    className="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center hover:bg-white dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-all active:scale-95"
                   >
                     <Plus size={16} />
                   </button>
@@ -126,7 +126,7 @@ export const ProductModal = ({ product, onClose, onConfirm }: ProductModalProps)
               </div>
               
               <div className="text-center sm:text-right">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Total Impact</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 dark:text-zinc-500 mb-1">Total Impact</p>
                 <p className="text-3xl font-mono font-bold tracking-tight text-zinc-900 dark:text-white">₹{((product.buyer_price_inr || 0) * quantity).toLocaleString()}</p>
               </div>
             </div>
@@ -138,7 +138,7 @@ export const ProductModal = ({ product, onClose, onConfirm }: ProductModalProps)
           </div>
           
           <div className="mt-10 pt-8 border-t border-zinc-100 dark:border-zinc-800/50 max-h-60 overflow-y-auto custom-scrollbar">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-6">Verified Reviews</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-6">Verified Reviews</h3>
             {isLoadingReviews ? (
               <div className="space-y-4">
                 <Skeleton className="w-full h-20 rounded-2xl" />

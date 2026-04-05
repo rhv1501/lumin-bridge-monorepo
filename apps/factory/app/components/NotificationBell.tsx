@@ -220,7 +220,7 @@ export default function NotificationBell({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-zinc-400 hover:text-white transition-colors relative focus:outline-none focus:ring-2 focus:ring-white/10 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-lg"
+        className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:text-white transition-colors relative focus:outline-none focus:ring-2 focus:ring-white/10 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-lg"
       >
         <Bell size={20} />
         {(unreadCount > 0 || hasNewItems) && (
@@ -234,18 +234,18 @@ export default function NotificationBell({
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl shadow-black/50 z-50 overflow-hidden"
+            className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl shadow-black/50 z-50 overflow-hidden"
           >
-            <div className="p-3 border-b border-zinc-800 flex justify-between items-center bg-zinc-900">
-              <h3 className="font-bold text-sm text-zinc-100">Notifications</h3>
+            <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-900">
+              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">Notifications</h3>
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
                   disabled={markingAll || !!markingNotificationId}
                   className={cn(
-                    "text-[10px] text-zinc-400 hover:text-white font-medium inline-flex items-center gap-2",
+                    "text-[10px] text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:text-white font-medium inline-flex items-center gap-2",
                     (markingAll || !!markingNotificationId) &&
-                      "opacity-60 cursor-not-allowed hover:text-zinc-400",
+                      "opacity-60 cursor-not-allowed hover:text-zinc-500 dark:text-zinc-400",
                   )}
                 >
                   {markingAll && (
@@ -259,7 +259,7 @@ export default function NotificationBell({
             </div>
             <div className="max-h-96 overflow-y-auto">
               {notifications.length === 0 ? (
-                <div className="p-6 text-center text-zinc-400 text-sm">
+                <div className="p-6 text-center text-zinc-500 dark:text-zinc-400 text-sm">
                   No notifications yet
                 </div>
               ) : (
@@ -267,8 +267,8 @@ export default function NotificationBell({
                   <div
                     key={n.id}
                     className={cn(
-                      "p-3 border-b border-zinc-800 text-sm transition-colors cursor-pointer",
-                      !n.is_read ? "bg-zinc-800/50" : "hover:bg-zinc-800",
+                      "p-3 border-b border-zinc-200 dark:border-zinc-800 text-sm transition-colors cursor-pointer",
+                      !n.is_read ? "bg-zinc-100 dark:bg-zinc-800/50" : "hover:bg-zinc-100 dark:bg-zinc-800",
                       markingNotificationId === n.id &&
                         "opacity-60 pointer-events-none",
                     )}
@@ -279,13 +279,13 @@ export default function NotificationBell({
                       <div className="min-w-0 flex-1">
                         <p
                           className={cn(
-                            "text-zinc-100",
+                            "text-zinc-900 dark:text-zinc-100",
                             !n.is_read && "font-medium",
                           )}
                         >
                           {n.message}
                         </p>
-                        <p className="text-[10px] text-zinc-400 mt-1">
+                        <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
                           {new Date(n.created_at).toLocaleString()}
                         </p>
                       </div>

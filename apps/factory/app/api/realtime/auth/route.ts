@@ -10,9 +10,21 @@ export const dynamic = "force-dynamic";
  * Client sends { socket_id, channel_name }.
  */
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const socketId = body?.socket_id as string | undefined;
-  const channelName = body?.channel_name as string | undefined;
+  let socketId: string | undefined;
+  let channelName: string | undefined;
+
+  const contentType = req.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    const body = await req.json().catch(() => null);
+    socketId = body?.socket_id;
+    channelName = body?.channel_name;
+  } else {
+    const text = await req.text().catch(() => "");
+    const params = new URLSearchParams(text);
+    socketId = params.get("socket_id") || undefined;
+    channelName = params.get("channel_name") || undefined;
+  }
 
   if (!socketId || !channelName) return badRequest("socket_id and channel_name required");
 

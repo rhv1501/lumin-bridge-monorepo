@@ -49,7 +49,7 @@ export const OrderTable = ({ orders, isLoading }: OrderTableProps) => {
               </tr>
             ) : (
               orders.map(o => (
-                <tr key={o.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors group">
+                <tr key={o.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors group">
                   <td className="p-6 font-mono text-xs text-zinc-500">#{o.id}</td>
                   <td className="p-6 text-sm font-semibold text-zinc-900">{o.product_name}</td>
                   <td className="p-6 text-sm text-zinc-600 font-medium">{o.buyer_company || o.buyer_email}</td>

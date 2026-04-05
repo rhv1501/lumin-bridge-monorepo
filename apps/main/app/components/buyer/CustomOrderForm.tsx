@@ -61,7 +61,7 @@ export const CustomOrderForm = ({ onSubmit, onCancel }: CustomOrderFormProps) =>
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onCancel}
-        className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-white dark:bg-zinc-900/40 backdrop-blur-sm"
       />
       <motion.div 
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -70,8 +70,8 @@ export const CustomOrderForm = ({ onSubmit, onCancel }: CustomOrderFormProps) =>
         className="relative w-full max-w-lg"
       >
         <Card className="p-8 border-0 shadow-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2.5rem]">
-          <button onClick={onCancel} className="absolute top-6 right-6 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-            <X size={18} className="text-zinc-400" />
+          <button onClick={onCancel} className="absolute top-6 right-6 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-colors">
+            <X size={18} className="text-zinc-500 dark:text-zinc-400" />
           </button>
 
           <div className="mb-8">
@@ -88,7 +88,7 @@ export const CustomOrderForm = ({ onSubmit, onCancel }: CustomOrderFormProps) =>
                   <img src={photoPreview} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                 ) : (
                   <div className="flex flex-col items-center text-center p-6">
-                    <ImageIcon className="text-zinc-300 dark:text-zinc-600 mb-4" size={48} strokeWidth={1} />
+                    <ImageIcon className="text-zinc-700 dark:text-zinc-300 dark:text-zinc-600 mb-4" size={48} strokeWidth={1} />
                     <p className="text-sm font-medium text-zinc-500">Click to upload image</p>
                   </div>
                 )}
@@ -99,7 +99,7 @@ export const CustomOrderForm = ({ onSubmit, onCancel }: CustomOrderFormProps) =>
               <label className="block text-[11px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 ml-1">Requirements</label>
               <textarea 
                 {...register('requirements')}
-                className="w-full px-5 py-4 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-transparent focus:outline-none focus:ring-2 focus:ring-zinc-900/5 focus:border-zinc-900 transition-all h-32 resize-none text-sm"
+                className="w-full px-5 py-4 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-transparent focus:outline-none focus:ring-2 focus:ring-zinc-900/5 focus:border-zinc-300 dark:border-zinc-900 transition-all h-32 resize-none text-sm"
                 placeholder="Describe your requirements in detail..."
               />
               {errors.requirements && <p className="text-xs text-red-500 ml-1">{errors.requirements.message}</p>}

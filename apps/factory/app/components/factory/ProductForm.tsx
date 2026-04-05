@@ -71,7 +71,7 @@ export const ProductForm = ({ initialData, onSubmit, onCancel }: ProductFormProp
         </h2>
         <button 
           onClick={onCancel}
-          className="p-2.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+          className="p-2.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 rounded-full transition-colors"
         >
           <X size={20} />
         </button>
@@ -106,7 +106,7 @@ export const ProductForm = ({ initialData, onSubmit, onCancel }: ProductFormProp
                 <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
               ) : (
                 <div className="flex flex-col items-center">
-                  <ImageIcon className="text-zinc-400 mb-2" size={32} />
+                  <ImageIcon className="text-zinc-500 dark:text-zinc-400 mb-2" size={32} />
                   <p className="text-sm text-zinc-500">Upload Image</p>
                 </div>
               )}

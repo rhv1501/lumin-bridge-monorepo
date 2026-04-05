@@ -92,13 +92,13 @@ export const UserTable = ({ users, isLoading, onUpdate, onDelete }: UserTablePro
                 </tr>
               ) : (
                 paginatedUsers.map(u => (
-                  <tr key={u.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors group">
+                  <tr key={u.id} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors group">
                     <td className="p-6 font-mono text-xs text-zinc-500">#{u.id}</td>
                     <td className="p-6">
                       {editingUser === u.id ? (
                         <div className="space-y-2 max-w-xs">
                           <Input {...register('company_name')} placeholder="Company Name" className="text-sm h-10 rounded-xl" />
-                          <div className="text-xs text-zinc-400 pl-2">{u.email}</div>
+                          <div className="text-xs text-zinc-500 dark:text-zinc-400 pl-2">{u.email}</div>
                         </div>
                       ) : (
                         <div>
@@ -127,7 +127,7 @@ export const UserTable = ({ users, isLoading, onUpdate, onDelete }: UserTablePro
                         <div className="text-sm space-y-1">
                           {u.mobile_number && <div className="text-zinc-700 dark:text-zinc-300">📱 {u.mobile_number}</div>}
                           {u.wechat_id && <div className="text-zinc-500">💬 {u.wechat_id}</div>}
-                          {!u.mobile_number && !u.wechat_id && <span className="text-zinc-400 italic">No contact info</span>}
+                          {!u.mobile_number && !u.wechat_id && <span className="text-zinc-500 dark:text-zinc-400 italic">No contact info</span>}
                         </div>
                       )}
                     </td>
@@ -162,7 +162,7 @@ export const UserTable = ({ users, isLoading, onUpdate, onDelete }: UserTablePro
       
       {!isLoading && totalPages > 1 && (
         <div className="flex items-center justify-between px-4 py-2">
-          <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+          <div className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             Page {currentPage} of {totalPages}
           </div>
           <div className="flex gap-2">

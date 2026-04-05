@@ -92,14 +92,14 @@ export const ChatBox = ({ customOrderId, currentUser, recipientId, recipientRole
   }
 
   return (
-    <div className="flex flex-col h-[450px] bg-zinc-950/50 rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl">
-      <div className="bg-zinc-900/80 p-5 border-b border-zinc-800/50 backdrop-blur-md z-10">
-        <h4 className="font-semibold text-sm tracking-tight text-white">Chat with {recipientRole}</h4>
+    <div className="flex flex-col h-[450px] bg-zinc-50 dark:bg-zinc-950/50 rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="bg-white dark:bg-zinc-900/80 p-5 border-b border-zinc-200 dark:border-zinc-800/50 backdrop-blur-md z-10">
+        <h4 className="font-semibold text-sm tracking-tight text-zinc-950 dark:text-white">Chat with {recipientRole}</h4>
       </div>
       
       <div className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar">
         {messages.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-sm text-zinc-400 dark:text-zinc-500 font-medium text-center px-4">
+          <div className="h-full flex items-center justify-center text-sm text-zinc-500 dark:text-zinc-400 dark:text-zinc-500 font-medium text-center px-4">
             No messages yet. Start the conversation!
           </div>
         ) : (
@@ -111,11 +111,11 @@ export const ChatBox = ({ customOrderId, currentUser, recipientId, recipientRole
                   "max-w-[85%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
                   isMe 
                     ? "bg-zinc-50 text-zinc-900 rounded-br-sm" 
-                    : "bg-zinc-800 border border-zinc-700/50 text-zinc-200 rounded-bl-sm"
+                    : "bg-zinc-100 dark:bg-zinc-800 border border-zinc-700/50 text-zinc-200 rounded-bl-sm"
                 )}>
                   {msg.content}
                 </div>
-                <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500 mt-1.5 px-1">
+                <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 dark:text-zinc-500 mt-1.5 px-1">
                   {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -125,12 +125,12 @@ export const ChatBox = ({ customOrderId, currentUser, recipientId, recipientRole
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSendMessage} className="p-4 bg-zinc-900/80 border-t border-zinc-800/50 flex gap-3 backdrop-blur-md z-10">
+      <form onSubmit={handleSendMessage} className="p-4 bg-white dark:bg-zinc-900/80 border-t border-zinc-200 dark:border-zinc-800/50 flex gap-3 backdrop-blur-md z-10">
         <Input 
           value={newMessageContent}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessageContent(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 rounded-full bg-zinc-800/50 border-transparent focus:bg-zinc-800"
+          className="flex-1 rounded-full bg-zinc-100 dark:bg-zinc-800/50 border-transparent focus:bg-zinc-100 dark:bg-zinc-800"
         />
         <Button type="submit" disabled={!newMessageContent.trim()} className="rounded-full w-10 h-10 p-0 flex items-center justify-center shrink-0">
           <Send size={16} className="ml-0.5" strokeWidth={2} />

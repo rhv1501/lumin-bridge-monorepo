@@ -23,12 +23,12 @@ export function ReviewTable({ reviews, isLoading }: ReviewTableProps) {
           <table className="w-full">
             <thead className="bg-zinc-50/50 dark:bg-zinc-800/30 border-b border-zinc-200/50 dark:border-zinc-800/50">
               <tr>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Date</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Buyer</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Product</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Factory</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Rating</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Comment</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Date</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Buyer</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Product</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Factory</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Rating</th>
+                <th className="text-left p-4 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Comment</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
@@ -51,17 +51,17 @@ export function ReviewTable({ reviews, isLoading }: ReviewTableProps) {
                 </tr>
               ) : (
                 paginatedReviews.map(r => (
-                  <tr key={r.id} className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-800/50 transition-colors duration-200">
-                    <td className="p-4 text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
+                  <tr key={r.id} className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-100 dark:bg-zinc-800/50 transition-colors duration-200">
+                    <td className="p-4 text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap group-hover:text-zinc-700 dark:group-hover:text-zinc-700 dark:text-zinc-300 transition-colors">
                       {new Date(r.created_at).toLocaleDateString()}
                     </td>
-                    <td className="p-4 text-sm font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">{r.buyer_company || 'Anonymous'}</td>
-                    <td className="p-4 text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">{r.product_name || 'Unknown Product'}</td>
-                    <td className="p-4 text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">{r.factory_company || 'Unknown Factory'}</td>
+                    <td className="p-4 text-sm font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-zinc-950 dark:text-white transition-colors">{r.buyer_company || 'Anonymous'}</td>
+                    <td className="p-4 text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-zinc-950 dark:text-white transition-colors">{r.product_name || 'Unknown Product'}</td>
+                    <td className="p-4 text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-zinc-950 dark:text-white transition-colors">{r.factory_company || 'Unknown Factory'}</td>
                     <td className="p-4">
                       <div className="flex items-center text-amber-400">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={14} className={i < r.rating ? "fill-current" : "text-zinc-300 dark:text-zinc-600"} />
+                          <Star key={i} size={14} className={i < r.rating ? "fill-current" : "text-zinc-700 dark:text-zinc-300 dark:text-zinc-600"} />
                         ))}
                       </div>
                     </td>

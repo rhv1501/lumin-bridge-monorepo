@@ -92,7 +92,7 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
                   {co.photo ? (
                     <img src={co.photo} alt="Requirement" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-300 dark:text-zinc-600">
+                    <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300 dark:text-zinc-600">
                       <FileText size={40} strokeWidth={1} />
                     </div>
                   )}
@@ -101,7 +101,7 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
                   <div>
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold uppercase text-zinc-400 tracking-widest">Request #{co.id}</span>
+                        <span className="text-[10px] font-bold uppercase text-zinc-500 dark:text-zinc-400 tracking-widest">Request #{co.id}</span>
                         {unreadMessageOrderIds.includes(co.id) && (
                           <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                         )}
@@ -131,13 +131,13 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
       </div>
 
       {selectedCustomOrder && (
-        <div className="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+        <div className="fixed inset-0 bg-white dark:bg-zinc-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-6">
           <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-[3rem] custom-scrollbar">
             <button 
               onClick={handleCloseDetails}
-              className="absolute top-8 right-8 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="absolute top-8 right-8 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-colors"
             >
-              <X size={20} className="text-zinc-400" />
+              <X size={20} className="text-zinc-500 dark:text-zinc-400" />
             </button>
             
             <div className="flex justify-between items-center mb-8 pr-12">
@@ -183,7 +183,7 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
                   {selectedCustomOrder.photo ? (
                     <img src={selectedCustomOrder.photo} alt="Requirement" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                    <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300">
                       <FileText size={48} strokeWidth={1} />
                     </div>
                   )}
@@ -191,7 +191,7 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
               </div>
               <div className="md:col-span-2 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">Description</h3>
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2">Description</h3>
                   <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-3xl border border-zinc-100">
                     {selectedCustomOrder.requirements}
                   </p>
@@ -219,12 +219,12 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
             ) : (
               <div className="space-y-6">
                 <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
-                  <span className="w-1.5 h-6 bg-zinc-900 dark:bg-white rounded-full"></span>
+                  <span className="w-1.5 h-6 bg-white dark:bg-zinc-900 dark:bg-white rounded-full"></span>
                   Factory Proposals
                 </h3>
                 <div className="grid grid-cols-1 gap-4">
                   {getProposalsForOrder(selectedCustomOrder.id).length === 0 ? (
-                    <div className="py-12 text-center text-zinc-400 italic bg-zinc-50/50 rounded-3xl border border-dashed">
+                    <div className="py-12 text-center text-zinc-500 dark:text-zinc-400 italic bg-zinc-50/50 rounded-3xl border border-dashed">
                       Waiting for factory responses...
                     </div>
                   ) : (
@@ -236,8 +236,8 @@ export const AdminCustomOrderList = ({ customOrders, proposals, isLoading, curre
                               {p.factory_id}
                             </div>
                             <div>
-                              <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Factory Proposal</p>
-                              <p className="text-xl font-mono font-bold">¥{p.price_cny} <span className="text-xs font-normal text-zinc-400">/ unit</span></p>
+                              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">Factory Proposal</p>
+                              <p className="text-xl font-mono font-bold">¥{p.price_cny} <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">/ unit</span></p>
                             </div>
                           </div>
                           <div className="text-right">

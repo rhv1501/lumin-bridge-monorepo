@@ -65,7 +65,7 @@ export const FactoryDashboard = ({
         fetch(`/api/products?role=factory&userId=${user.id}`),
         fetch(`/api/orders?role=factory&userId=${user.id}`),
         fetch(`/api/custom-orders?role=factory`),
-        fetch(`/api/custom-orders/proposals?factory_id=${user.id}`),
+        fetch(`/api/custom-order-proposals?factory_id=${user.id}`),
         fetch(`/api/reviews`)
       ]);
       
@@ -189,8 +189,8 @@ export const FactoryDashboard = ({
     <div className="space-y-10 pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Factory Dashboard</h1>
-          <p className="text-zinc-400 text-base sm:text-lg max-w-2xl">Manage your manufacturing operations and product catalog.</p>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white">Factory Dashboard</h1>
+          <p className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg max-w-2xl">Manage your manufacturing operations and product catalog.</p>
         </div>
       </div>
 
@@ -207,18 +207,18 @@ export const FactoryDashboard = ({
               className={cn(
                 "w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-semibold transition-all duration-300 relative group text-left",
                 activeTab === item.id 
-                  ? "text-white" 
-                  : "text-zinc-500 hover:text-white"
+                  ? "text-zinc-950 dark:text-white" 
+                  : "text-zinc-500 hover:text-zinc-950 dark:text-white"
               )}
             >
               {activeTab === item.id && (
                 <motion.div
                   layoutId="activeTabIndicator"
-                  className="absolute inset-0 bg-zinc-800 rounded-3xl shadow-lg border border-zinc-700/50"
+                  className="absolute inset-0 bg-zinc-100 dark:bg-zinc-800 rounded-3xl shadow-lg border border-zinc-700/50"
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <item.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === item.id ? "text-white" : "text-zinc-400")} />
+              <item.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === item.id ? "text-zinc-950 dark:text-white" : "text-zinc-500 dark:text-zinc-400")} />
               <span className="relative z-10">{item.label}</span>
               {item.id === 'orders' && hasNewOrders(orders) && (
                 <span className="absolute right-6 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
@@ -256,10 +256,10 @@ export const FactoryDashboard = ({
                   <div className="space-y-8">
                     <div className="flex gap-4">
                       <div className="relative flex-1 group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-white transition-colors" size={18} />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 group-focus-within:text-zinc-950 dark:text-white transition-colors" size={18} />
                         <Input 
                           placeholder="Search your products..." 
-                          className="pl-12 bg-zinc-900/50 border-zinc-800/50"
+                          className="pl-12 bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800/50"
                           value={searchTerm}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                         />
@@ -317,10 +317,10 @@ export const FactoryDashboard = ({
                 <div className="space-y-8">
                   <div className="flex gap-4">
                     <div className="relative flex-1 group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-white transition-colors" size={18} />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 group-focus-within:text-zinc-950 dark:text-white transition-colors" size={18} />
                       <Input 
                         placeholder="Search orders..." 
-                        className="pl-12 bg-zinc-900/50 border-zinc-800/50"
+                        className="pl-12 bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800/50"
                         value={searchTerm}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                       />

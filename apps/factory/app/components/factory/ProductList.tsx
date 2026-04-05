@@ -69,7 +69,7 @@ export const ProductList = ({ products, isLoading, onEdit, onDelete, onAdd, onIm
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-zinc-300 dark:text-zinc-600">
+                  <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300 dark:text-zinc-600">
                     <Package size={48} />
                   </div>
                 )}
@@ -81,7 +81,7 @@ export const ProductList = ({ products, isLoading, onEdit, onDelete, onAdd, onIm
                 <div className="absolute top-3 left-3">
                   <span className={cn(
                     "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm",
-                    p.status === 'published' ? "bg-emerald-500 text-white" : "bg-amber-500 text-white"
+                    p.status === 'published' ? "bg-emerald-500 text-zinc-950 dark:text-white" : "bg-amber-500 text-zinc-950 dark:text-white"
                   )}>
                     {p.status}
                   </span>
@@ -94,11 +94,11 @@ export const ProductList = ({ products, isLoading, onEdit, onDelete, onAdd, onIm
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-4 flex-1">{p.description}</p>
                 <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/50 mt-auto">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold uppercase text-zinc-400 mb-0.5">Price</span>
+                    <span className="text-[10px] font-bold uppercase text-zinc-500 dark:text-zinc-400 mb-0.5">Price</span>
                     <span className="font-mono font-semibold text-base text-zinc-900 dark:text-white">¥{p.factory_price_cny}</span>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-bold uppercase text-zinc-400 mb-0.5">MOQ</span>
+                    <span className="text-[10px] font-bold uppercase text-zinc-500 dark:text-zinc-400 mb-0.5">MOQ</span>
                     <span className="font-mono font-medium text-xs text-zinc-700 dark:text-zinc-300">{p.moq || 1} units</span>
                   </div>
                 </div>

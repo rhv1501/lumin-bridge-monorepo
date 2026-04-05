@@ -44,7 +44,7 @@ export const ProductGrid = ({ products, isLoading, onSelect }: ProductGridProps)
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-zinc-300 dark:text-zinc-600 group-hover:scale-105 transition-transform duration-700">
+                <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300 dark:text-zinc-600 group-hover:scale-105 transition-transform duration-700">
                   <Package size={48} strokeWidth={1} />
                 </div>
               )}
@@ -68,11 +68,11 @@ export const ProductGrid = ({ products, isLoading, onSelect }: ProductGridProps)
               <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6 leading-relaxed flex-1">{p.description}</p>
               <div className="flex items-center justify-between pt-5 border-t border-zinc-100 dark:border-zinc-800/50 mt-auto">
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase text-zinc-400 mb-1">Price</span>
+                  <span className="text-[10px] font-bold uppercase text-zinc-500 dark:text-zinc-400 mb-1">Price</span>
                   <span className="font-mono font-semibold text-zinc-900 dark:text-zinc-50 text-lg">₹{p.buyer_price_inr?.toLocaleString() || 'N/A'}</span>
                 </div>
                 <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-bold uppercase text-zinc-400 mb-1">MOQ</span>
+                  <span className="text-[10px] font-bold uppercase text-zinc-500 dark:text-zinc-400 mb-1">MOQ</span>
                   <span className="font-mono font-medium text-zinc-700 dark:text-zinc-300">{p.moq || 1} units</span>
                 </div>
               </div>

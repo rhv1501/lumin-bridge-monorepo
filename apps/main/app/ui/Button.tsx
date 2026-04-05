@@ -24,10 +24,10 @@ export function Button({
 }) {
   const variants = {
     primary: "bg-zinc-50 text-zinc-900 hover:bg-zinc-200 shadow-sm active:scale-[0.97]",
-    secondary: "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 shadow-sm active:scale-[0.97]",
-    outline: "bg-transparent border border-zinc-700 text-zinc-100 hover:bg-zinc-800 shadow-sm active:scale-[0.97]",
-    danger: "bg-red-500 text-white hover:bg-red-600 shadow-sm active:scale-[0.97]",
-    ghost: "bg-transparent hover:bg-zinc-800/50 text-zinc-400 hover:text-zinc-100"
+    secondary: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-700 shadow-sm active:scale-[0.97]",
+    outline: "bg-transparent border border-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:bg-zinc-800 shadow-sm active:scale-[0.97]",
+    danger: "bg-red-500 text-zinc-950 dark:text-white hover:bg-red-600 shadow-sm active:scale-[0.97]",
+    ghost: "bg-transparent hover:bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100"
   };
 
   const sizes = {

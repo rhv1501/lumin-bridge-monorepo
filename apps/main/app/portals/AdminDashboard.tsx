@@ -123,8 +123,8 @@ export const AdminDashboard = ({
             {/* Admin Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-2">
-                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Admin Control Center</h1>
-                    <p className="text-zinc-400 text-base sm:text-lg max-w-2xl">Global platform management and system configuration.</p>
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white">Admin Control Center</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg max-w-2xl">Global platform management and system configuration.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <Button variant="outline" className="rounded-full h-11 sm:h-12 px-5 sm:px-6 text-sm">
@@ -145,18 +145,18 @@ export const AdminDashboard = ({
                             className={cn(
                                 "w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-semibold transition-all duration-300 relative group text-left",
                                 activeTab === tab.id
-                                    ? "text-white"
-                                    : "text-zinc-500 hover:text-white"
+                                    ? "text-zinc-950 dark:text-white"
+                                    : "text-zinc-500 hover:text-zinc-950 dark:text-white"
                             )}
                         >
                             {activeTab === tab.id && (
                                 <motion.div
                                     layoutId="activeTabAdmin"
-                                    className="absolute inset-0 bg-zinc-800 rounded-3xl shadow-lg border border-zinc-700"
+                                    className="absolute inset-0 bg-zinc-100 dark:bg-zinc-800 rounded-3xl shadow-lg border border-zinc-700"
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                 />
                             )}
-                            <tab.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === tab.id ? "text-white" : "text-zinc-400")} />
+                            <tab.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === tab.id ? "text-zinc-950 dark:text-white" : "text-zinc-500 dark:text-zinc-400")} />
                             <span className="relative z-10">{tab.label}</span>
                             {tab.badge && (
                                 <span className="absolute right-6 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.6)] animate-pulse" />
@@ -180,10 +180,10 @@ export const AdminDashboard = ({
                             {activeTab === 'users' && (
                                 <div className="space-y-6">
                                     <div className="relative group">
-                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
+                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" size={20} />
                                         <Input 
                                             placeholder="Search users by name, email or company..." 
-                                            className="pl-14 h-16 rounded-[2rem] bg-zinc-900 border-0 shadow-sm transition-all"
+                                            className="pl-14 h-16 rounded-[2rem] bg-white dark:bg-zinc-900 border-0 shadow-sm transition-all"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />
@@ -287,7 +287,7 @@ export const AdminDashboard = ({
                                 <div className="space-y-10">
                                     <ProfileSettings user={user} onUpdate={() => toast.success("Profile saved")} />
                                     
-                                    <Card className="p-8 border-0 shadow-xl bg-zinc-900/90 backdrop-blur-xl rounded-[2.5rem]">
+                                    <Card className="p-8 border-0 shadow-xl bg-white dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2.5rem]">
                                         <div className="flex items-center gap-3 mb-8">
                                             <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center">
                                                 <SettingsIcon size={20} className="text-zinc-900" />
@@ -298,25 +298,25 @@ export const AdminDashboard = ({
                                         <form onSubmit={handleSubmitSettings(handleSettingsUpdate)} className="space-y-8">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                                 <div className="space-y-3">
-                                                    <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 ml-1">Exchange Rate (CNY → INR)</label>
+                                                    <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 ml-1">Exchange Rate (CNY → INR)</label>
                                                     <Input 
                                                         {...registerSettings('exchange_rate')} 
                                                         placeholder="e.g., 12.0"
-                                                        className="h-14 rounded-2xl bg-zinc-800 border-0 focus:ring-2 ring-zinc-700 text-lg font-mono"
+                                                        className="h-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border-0 focus:ring-2 ring-zinc-700 text-lg font-mono"
                                                     />
-                                                    <p className="text-xs text-zinc-400 ml-1 italic">Conversion factor for pricing calculation.</p>
+                                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 ml-1 italic">Conversion factor for pricing calculation.</p>
                                                 </div>
                                                 <div className="space-y-3">
-                                                    <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 ml-1">Profit Margin Multiplier</label>
+                                                    <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 ml-1">Profit Margin Multiplier</label>
                                                     <Input 
                                                         {...registerSettings('admin_markup')} 
                                                         placeholder="e.g., 1.3"
-                                                        className="h-14 rounded-2xl bg-zinc-800 border-0 focus:ring-2 ring-zinc-700 text-lg font-mono"
+                                                        className="h-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border-0 focus:ring-2 ring-zinc-700 text-lg font-mono"
                                                     />
-                                                    <p className="text-xs text-zinc-400 ml-1 italic">Markup applied to factory unit prices.</p>
+                                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 ml-1 italic">Markup applied to factory unit prices.</p>
                                                 </div>
                                             </div>
-                                            <div className="flex justify-end pt-6 border-t border-zinc-800">
+                                            <div className="flex justify-end pt-6 border-t border-zinc-200 dark:border-zinc-800">
                                                 <Button type="submit" className="h-14 px-10 rounded-2xl shadow-xl shadow-zinc-900/10">
                                                     <Save size={20} className="mr-2" />
                                                     Apply System Changes

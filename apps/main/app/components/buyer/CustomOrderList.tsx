@@ -77,7 +77,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                     {co.photo ? (
                       <img src={co.photo} alt="Requirement" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-zinc-300 dark:text-zinc-600 group-hover:scale-110 transition-transform duration-1000 ease-out">
+                      <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300 dark:text-zinc-600 group-hover:scale-110 transition-transform duration-1000 ease-out">
                         <FileText size={40} strokeWidth={1} />
                       </div>
                     )}
@@ -86,7 +86,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                     <div>
                       <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-3">
-                          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">Request #{co.id}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Request #{co.id}</span>
                           {hasUnread && (
                             <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.7)]"></span>
                           )}
@@ -110,10 +110,10 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                             {orderProposals.length} Proposal{orderProposals.length > 1 ? 's' : ''}
                           </span>
                         ) : (
-                          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 px-1">Searching factories...</span>
+                          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 dark:text-zinc-500 px-1">Searching factories...</span>
                         )}
                       </div>
-                      <Button size="sm" variant="outline" onClick={() => handleViewProposals(co)} className="relative h-12 rounded-full px-8 hover:bg-zinc-900 hover:text-white transition-all">
+                      <Button size="sm" variant="outline" onClick={() => handleViewProposals(co)} className="relative h-12 rounded-full px-8 hover:bg-white dark:bg-zinc-900 hover:text-zinc-950 dark:text-white transition-all">
                         View Details
                         {hasUnread && (
                           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-md"></span>
@@ -160,7 +160,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                   </Button>
                   <button 
                     onClick={handleCloseProposals}
-                    className="p-3 text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-all"
+                    className="p-3 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-950 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-100 dark:bg-zinc-800 rounded-full transition-all"
                   >
                     <X size={24} />
                   </button>
@@ -175,7 +175,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                     </div>
                   )}
                   <div className="flex-1 space-y-4">
-                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 px-1">Global Requirements</span>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 dark:text-zinc-500 px-1">Global Requirements</span>
                     <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">{selectedCustomOrder.requirements}</p>
                   </div>
                 </div>
@@ -192,7 +192,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                   <div className="space-y-8 pb-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Active Proposals</h3>
-                        <span className="text-[11px] font-extrabold bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-1.5 rounded-full">
+                        <span className="text-[11px] font-extrabold bg-white dark:bg-zinc-900 dark:bg-white text-zinc-950 dark:text-white dark:text-zinc-900 px-4 py-1.5 rounded-full">
                             {getProposalsForOrder(selectedCustomOrder.id).length} UNLOCKED
                         </span>
                     </div>
@@ -200,7 +200,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                     <div className="grid gap-6">
                       {getProposalsForOrder(selectedCustomOrder.id).length === 0 ? (
                         <div className="py-20 flex flex-col items-center justify-center text-center space-y-4">
-                            <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400">
+                            <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-500 dark:text-zinc-400">
                                 <FileText size={32} />
                             </div>
                             <div>
@@ -210,13 +210,13 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                         </div>
                       ) : (
                         getProposalsForOrder(selectedCustomOrder.id).map(p => (
-                          <Card key={p.id} className="p-8 border-0 shadow-xl rounded-[2.5rem] bg-white/80 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800 transition-all duration-300">
+                          <Card key={p.id} className="p-8 border-0 shadow-xl rounded-[2.5rem] bg-white/80 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-100 dark:bg-zinc-800 transition-all duration-300">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                               <div className="space-y-3">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Global Proposal ID: {p.id}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 dark:text-zinc-500">Global Proposal ID: {p.id}</span>
                                 <div className="flex items-baseline gap-2">
                                   <span className="text-4xl font-mono font-bold tracking-tighter text-zinc-900 dark:text-white">₹{p.price_inr?.toLocaleString() || 'TBD'}</span>
-                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest">per unit</span>
+                                  <span className="text-sm font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">per unit</span>
                                 </div>
                               </div>
                               <span className={cn(
@@ -231,7 +231,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                             
                             <div className="grid grid-cols-2 gap-6 mb-8">
                                 <div className="p-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1 block">Production Time</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-1 block">Production Time</span>
                                     <span className="text-lg font-bold text-zinc-900 dark:text-white">{p.production_time} Working Days</span>
                                 </div>
                                 <div className="p-4 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/5 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/10">
@@ -261,7 +261,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                               )}
                               
                               {p.status === 'accepted' && (
-                                <Button variant="outline" onClick={() => generateCustomOrderInvoice(selectedCustomOrder, p, currentUser)} className="h-14 rounded-2xl px-10 font-bold border-zinc-900 dark:border-white shadow-xl">
+                                <Button variant="outline" onClick={() => generateCustomOrderInvoice(selectedCustomOrder, p, currentUser)} className="h-14 rounded-2xl px-10 font-bold border-zinc-300 dark:border-zinc-900 dark:border-white shadow-xl">
                                   <Download size={20} className="mr-2" />
                                   Download Purchase Order
                                 </Button>

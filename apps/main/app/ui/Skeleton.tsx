@@ -4,7 +4,7 @@ import { cn } from "@luminbridge/ui";
 export function Skeleton({ className }: { className?: string }) {
   return (
     <div
-      className={cn("animate-pulse bg-zinc-800/60 rounded-xl", className)}
+      className={cn("animate-pulse bg-zinc-100 dark:bg-zinc-800/60 rounded-xl", className)}
       aria-hidden="true"
     />
   );
@@ -13,7 +13,7 @@ export function Skeleton({ className }: { className?: string }) {
 /** A single skeleton table row (n columns) */
 export function SkeletonTableRow({ cols = 4 }: { cols?: number }) {
   return (
-    <tr className="border-b border-zinc-800/50">
+    <tr className="border-b border-zinc-200 dark:border-zinc-800/50">
       {Array.from({ length: cols }).map((_, i) => (
         <td key={i} className="px-4 py-3">
           <Skeleton className="h-4 w-full" />
@@ -43,7 +43,7 @@ export function SkeletonTable({
 /** Skeleton product / order card for mobile views */
 export function SkeletonCard() {
   return (
-    <div className="bg-zinc-900 border border-white/5 rounded-xl p-4 space-y-3">
+    <div className="bg-white dark:bg-zinc-900 border border-white/5 rounded-xl p-4 space-y-3">
       <div className="flex items-center gap-3">
         <Skeleton className="w-10 h-10 rounded-lg flex-shrink-0" />
         <div className="flex-1 space-y-1.5">
@@ -79,8 +79,8 @@ export function SkeletonCardGrid({
 /** Full-page centred spinner for auth/redirect states */
 export function PageSpinner() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950">
-      <div className="w-8 h-8 border-2 border-zinc-800 border-t-zinc-50 rounded-full animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950">
+      <div className="w-8 h-8 border-2 border-zinc-200 dark:border-zinc-800 border-t-zinc-50 rounded-full animate-spin" />
     </div>
   );
 }

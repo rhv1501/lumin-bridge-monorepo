@@ -1,10 +1,11 @@
 @import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap";
 
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
   body {
-    @apply bg-zinc-950 font-sans text-zinc-50 antialiased;
+    @apply bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 font-sans antialiased;
   }
 }
 

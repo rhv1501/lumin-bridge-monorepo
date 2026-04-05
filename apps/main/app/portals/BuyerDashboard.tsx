@@ -153,8 +153,8 @@ export const BuyerDashboard = ({
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-2">
-                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Welcome, {user.company_name || 'Guest'}</h1>
-                    <p className="text-zinc-400 text-base sm:text-lg max-w-2xl">Manage your global sourcing and manufacturing orders.</p>
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-white">Welcome, {user.company_name || 'Guest'}</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg max-w-2xl">Manage your global sourcing and manufacturing orders.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <Button 
@@ -178,18 +178,18 @@ export const BuyerDashboard = ({
                             className={cn(
                                 "w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-semibold transition-all duration-300 relative group text-left",
                                 activeTab === tab.id 
-                                    ? "text-white" 
-                                    : "text-zinc-500 hover:text-white"
+                                    ? "text-zinc-950 dark:text-white" 
+                                    : "text-zinc-500 hover:text-zinc-950 dark:text-white"
                             )}
                         >
                             {activeTab === tab.id && (
                                 <motion.div
                                     layoutId="activeTab"
-                                    className="absolute inset-0 bg-zinc-900 rounded-3xl shadow-lg border border-zinc-800"
+                                    className="absolute inset-0 bg-white dark:bg-zinc-900 rounded-3xl shadow-lg border border-zinc-200 dark:border-zinc-800"
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                 />
                             )}
-                            <tab.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === tab.id ? "text-white" : "text-zinc-400")} />
+                            <tab.icon size={20} className={cn("relative z-10 transition-transform group-hover:scale-110", activeTab === tab.id ? "text-zinc-950 dark:text-white" : "text-zinc-500 dark:text-zinc-400")} />
                             <span className="relative z-10">{tab.label}</span>
                             {tab.badge && (
                                 <span className="absolute right-6 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
@@ -218,10 +218,10 @@ export const BuyerDashboard = ({
                                     </div>
 
                                     <div className="relative group">
-                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400 transition-colors group-focus-within:text-zinc-900" size={20} />
+                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 transition-colors group-focus-within:text-zinc-900" size={20} />
                                         <Input 
                                             placeholder="Search premium product catalog..." 
-                                            className="pl-14 h-16 rounded-[2rem] bg-zinc-900 border-0 shadow-sm focus:shadow-md transition-all text-lg"
+                                            className="pl-14 h-16 rounded-[2rem] bg-white dark:bg-zinc-900 border-0 shadow-sm focus:shadow-md transition-all text-lg"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />

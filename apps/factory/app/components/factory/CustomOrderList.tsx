@@ -93,7 +93,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                     {co.photo ? (
                       <img src={co.photo} alt="Requirement" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                      <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300">
                         <FileText size={32} />
                       </div>
                     )}
@@ -101,7 +101,7 @@ export const CustomOrderList = ({ customOrders, proposals, isLoading, currentUse
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-xs font-bold text-zinc-400">Request #{co.id}</span>
+                        <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Request #{co.id}</span>
                         <span className={cn(
                           "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase",
                           co.status === 'pending' && "bg-amber-100 text-amber-700",

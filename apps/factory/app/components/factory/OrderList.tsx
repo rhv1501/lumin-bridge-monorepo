@@ -64,7 +64,7 @@ export const OrderList = ({ orders, isLoading, onUpdateStatus }: OrderListProps)
               </tr>
             ) : (
               orders.map(o => (
-                <tr key={o.id} className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/30 transition-colors group">
+                <tr key={o.id} className="hover:bg-zinc-50/80 dark:hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors group">
                   <td className="p-4 font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">#{o.id}</td>
                   <td className="p-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">{o.product_name}</td>
                   <td className="p-4 text-sm font-medium text-zinc-600 dark:text-zinc-400">{o.buyer_company || o.buyer_email}</td>
