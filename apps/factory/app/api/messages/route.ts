@@ -1,4 +1,4 @@
-import { getCustomOrderMessages, publishUserEventExternal, sql } from "@luminbridge/db";
+import { createNotification, getCustomOrderMessages, publishUserEventExternal, sql } from "@luminbridge/db";
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -28,11 +28,12 @@ export async function POST(request: Request) {
       RETURNING *
     `;
 
-    // Trigger notification
-    await sql`
-      INSERT INTO notifications (user_id, message, type, related_id)
-      VALUES (${receiver_id}, ${'New message for custom order #' + custom_order_id}, 'message', ${custom_order_id})
-    `;
+    await createNotification(
+      receiver_id,
+      `New message for custom order #${custom_order_id}`,
+      "message",
+      custom_order_id,
+    );
 
     // Publish real-time event
     await publishUserEventExternal(receiver_id, 'new_message', newMessage);

@@ -182,6 +182,12 @@ export default function NotificationBell({
           detail: { tab: "custom-orders", id: n.related_id },
         }),
       );
+    } else if (n.type === "message") {
+      window.dispatchEvent(
+        new CustomEvent("navigate", {
+          detail: { tab: "custom-orders", id: n.related_id },
+        }),
+      );
     } else {
       // Fallback based on message content
       if (n.message.toLowerCase().includes("order")) {

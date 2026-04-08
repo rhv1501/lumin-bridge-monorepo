@@ -1,4 +1,4 @@
-import { badRequest, jsonNoStore, refreshAdmins, refreshUsers, sql, toInt } from "@luminbridge/db";
+import { badRequest, createNotification, jsonNoStore, refreshAdmins, refreshUsers, sql, toInt } from "@luminbridge/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -98,6 +98,31 @@ export async function POST(req: Request) {
     refreshAdmins({ resource: "products", action: "created", id }),
     refreshUsers([factory_id], { resource: "products", action: "created", id }),
   ]);
+
+  // Notify all admins about new product submission
+  try {
+    const factoryRows = await sql<{ company_name: string | null }[]>`
+      SELECT company_name FROM users WHERE id = ${factory_id} LIMIT 1
+    `;
+    const factoryCompany = factoryRows[0]?.company_name ?? "(unknown factory)";
+
+    const admins = await sql<{ id: number }[]>`
+      SELECT id::int as id FROM users WHERE role = 'admin'
+    `;
+
+    await Promise.all(
+      admins.map((admin) =>
+        createNotification(
+          admin.id,
+          `New product "${name}" submitted by ${factoryCompany} — pending review`,
+          "product",
+          id,
+        ),
+      ),
+    );
+  } catch (e) {
+    console.error("Failed to create product submission notification", e);
+  }
 
   return jsonNoStore({ id });
 }

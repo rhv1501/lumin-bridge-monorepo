@@ -188,6 +188,14 @@ export default function NotificationBell({
           detail: { tab: "custom-orders", id: n.related_id },
         }),
       );
+    } else if (n.type === "message") {
+      window.dispatchEvent(
+        new CustomEvent("navigate", {
+          detail: { tab: "custom-orders", id: n.related_id },
+        }),
+      );
+    } else if (n.type === "account-approved" || n.type === "account-disapproved") {
+      // No navigation for account notifications
     } else {
       // Fallback based on message content
       if (n.message.toLowerCase().includes("order")) {

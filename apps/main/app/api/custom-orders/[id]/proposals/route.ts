@@ -165,6 +165,23 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
         customOrderId,
       );
     }
+
+    // Notify the buyer who owns this custom order
+    const owners = await sql<{ buyer_id: number }[]>`
+      SELECT buyer_id::int as buyer_id
+      FROM custom_orders
+      WHERE id = ${customOrderId}
+      LIMIT 1
+    `;
+    const buyerId = owners[0]?.buyer_id;
+    if (buyerId) {
+      await createNotification(
+        buyerId,
+        `A factory has submitted a proposal for your Custom Order #${customOrderId}. Review it now!`,
+        "custom-order",
+        customOrderId,
+      );
+    }
   } catch (e) {
     console.error("Failed to create proposal notification", e);
   }
