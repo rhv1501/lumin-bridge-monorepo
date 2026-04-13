@@ -11,7 +11,12 @@ import {
 import { usePortalState } from "@/portals/usePortalState";
 import { useRealtimeData } from "@/portals/useRealtimeData";
 import PortalShellClient from "@/portals/PortalShellClient";
-import { ShoppingBag, Package, FileText, Settings as SettingsIcon } from "lucide-react";
+import {
+  ShoppingBag,
+  Package,
+  FileText,
+  Settings as SettingsIcon,
+} from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -39,21 +44,28 @@ export default function BuyerPageClient({
   const orders = useRealtimeData<Order[]>(
     user.id,
     "orders",
-    () => fetch(`/api/orders?role=buyer&userId=${user.id}`).then((r) => r.json()),
+    () =>
+      fetch(`/api/orders?role=buyer&userId=${user.id}`).then((r) => r.json()),
     initialOrders,
   );
 
   const customOrders = useRealtimeData<CustomOrder[]>(
     user.id,
     "custom-orders",
-    () => fetch(`/api/custom-orders?role=buyer&userId=${user.id}`).then((r) => r.json()),
+    () =>
+      fetch(`/api/custom-orders?role=buyer&userId=${user.id}`).then((r) =>
+        r.json(),
+      ),
     initialCustomOrders,
   );
 
   const allProposals = useRealtimeData<CustomOrderProposal[]>(
     user.id,
     "custom-order-proposals",
-    () => fetch(`/api/custom-order-proposals?role=buyer&userId=${user.id}`).then((r) => r.json()),
+    () =>
+      fetch(`/api/custom-order-proposals?role=buyer&userId=${user.id}`).then(
+        (r) => r.json(),
+      ),
     initialAllProposals,
   );
   const router = useRouter();
@@ -66,13 +78,25 @@ export default function BuyerPageClient({
     handleLogout,
   } = usePortalState(user.role);
 
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'custom-orders' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<
+    "products" | "orders" | "custom-orders" | "settings"
+  >("products");
 
   const buyerTabs = [
-    { id: 'products', label: 'Marketplace', icon: ShoppingBag },
-    { id: 'orders', label: 'My Orders', icon: Package, badge: hasNewOrders(initialOrders) },
-    { id: 'custom-orders', label: 'Custom Requests', icon: FileText, badge: hasNewCustomOrders(initialCustomOrders) },
-    { id: 'settings', label: 'Profile Settings', icon: SettingsIcon },
+    { id: "products", label: "Marketplace", icon: ShoppingBag },
+    {
+      id: "orders",
+      label: "My Orders",
+      icon: Package,
+      badge: hasNewOrders(initialOrders),
+    },
+    {
+      id: "custom-orders",
+      label: "Custom Requests",
+      icon: FileText,
+      badge: hasNewCustomOrders(initialCustomOrders),
+    },
+    { id: "settings", label: "Profile Settings", icon: SettingsIcon },
   ];
 
   return (
