@@ -1,11 +1,10 @@
 import React from "react";
 import { cn } from "./cn";
 
-export function Input({
-  label,
-  className,
-  ...props
-}: { label?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+export const Input = React.forwardRef<
+  HTMLInputElement,
+  { label?: string } & React.InputHTMLAttributes<HTMLInputElement>
+>(function Input({ label, className, ...props }, ref) {
   return (
     <div className="space-y-1.5">
       {label && (
@@ -14,6 +13,7 @@ export function Input({
         </label>
       )}
       <input
+        ref={ref}
         {...props}
         className={cn(
           "w-full px-4 py-3 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/20 bg-zinc-800/50 text-zinc-50 transition-all duration-300 placeholder:text-zinc-500",
@@ -22,4 +22,6 @@ export function Input({
       />
     </div>
   );
-}
+});
+
+Input.displayName = "Input";

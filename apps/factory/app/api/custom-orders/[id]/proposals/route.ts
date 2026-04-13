@@ -86,16 +86,84 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
   const photo = (body?.photo as string | undefined) ?? null;
   const description = (body?.description as string | undefined) ?? null;
   const price_cny = body?.price_cny as number | undefined;
+  const production_time = body?.production_time as number | undefined;
+  const notes = (body?.notes as string | undefined) ?? null;
 
   if (!factory_id) return badRequest("factory_id required");
 
-  const rows = await sql<{ id: number }[]>`
-    INSERT INTO custom_order_proposals (custom_order_id, factory_id, photo, description, price_cny)
-    VALUES (${customOrderId}, ${factory_id}, ${photo}, ${description}, ${price_cny ?? null})
-    RETURNING id::int as id
+  const existing = await sql<{ id: number }[]>`
+    SELECT id::int as id
+    FROM custom_order_proposals
+    WHERE custom_order_id = ${customOrderId} AND factory_id = ${factory_id}
+    ORDER BY created_at DESC
+    LIMIT 1
   `;
 
-  const proposalId = rows[0].id;
+  let proposalId: number;
+  let action: "created" | "updated" = "created";
+
+  if (existing[0]?.id) {
+    proposalId = existing[0].id;
+    action = "updated";
+
+    await sql`
+      UPDATE custom_order_proposals
+      SET
+        photo = ${photo},
+        description = ${description},
+        price_cny = ${price_cny ?? null},
+        production_time = ${production_time ?? null},
+        notes = ${notes},
+        status = 'pending'
+      WHERE id = ${proposalId}
+    `;
+  } else {
+    const rows = await sql<{ id: number }[]>`
+      INSERT INTO custom_order_proposals (
+        custom_order_id,
+        factory_id,
+        photo,
+        description,
+        price_cny,
+        production_time,
+        notes
+      )
+      VALUES (
+        ${customOrderId},
+        ${factory_id},
+        ${photo},
+        ${description},
+        ${price_cny ?? null},
+        ${production_time ?? null},
+        ${notes}
+      )
+      RETURNING id::int as id
+    `;
+    proposalId = rows[0].id;
+  }
+
+  const saved = await sql`
+    SELECT
+      cop.id::int as id,
+      cop.custom_order_id::int as custom_order_id,
+      cop.factory_id::int as factory_id,
+      cop.photo,
+      cop.description,
+      cop.price_cny,
+      cop.production_time,
+      cop.notes,
+      cop.price_inr,
+      cop.status,
+      cop.created_at::text as created_at,
+      u.company_name as factory_company,
+      u.email as factory_email,
+      u.mobile_number as factory_mobile,
+      u.wechat_id as factory_wechat
+    FROM custom_order_proposals cop
+    JOIN users u ON cop.factory_id = u.id
+    WHERE cop.id = ${proposalId}
+    LIMIT 1
+  `;
 
   // Realtime refresh: admins see proposals list, factory sees its proposal, buyer may see status changes later
   // We'll also refresh the buyer who owns this custom order.
@@ -110,14 +178,14 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
     await Promise.all([
       refreshAdmins({
         resource: "custom-order-proposals",
-        action: "created",
+        action,
         id: proposalId,
       }),
       refreshUsers(
         [factory_id, ...(buyerId ? [buyerId] : [])],
         {
           resource: "custom-order-proposals",
-          action: "created",
+          action,
           id: proposalId,
         },
       ),
@@ -160,7 +228,7 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
     if (admins[0]?.id) {
       await createNotification(
         admins[0].id,
-        `New proposal for Custom Order #${customOrderId} from ${factoryCompany}`,
+        `${action === "updated" ? "Updated" : "New"} proposal for Custom Order #${customOrderId} from ${factoryCompany}`,
         "custom-order",
         customOrderId,
       );
@@ -177,7 +245,7 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
     if (buyerId) {
       await createNotification(
         buyerId,
-        `A factory has submitted a proposal for your Custom Order #${customOrderId}. Review it now!`,
+        `A factory has ${action === "updated" ? "updated" : "submitted"} a proposal for your Custom Order #${customOrderId}. Review it now!`,
         "custom-order",
         customOrderId,
       );
@@ -186,5 +254,5 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
     console.error("Failed to create proposal notification", e);
   }
 
-  return jsonNoStore({ id: proposalId });
+  return jsonNoStore(saved[0] ?? { id: proposalId });
 }

@@ -1,7 +1,8 @@
 "use client";
 import { generateCustomOrderInvoice } from "@luminbridge/db/client";
 import { Button, Card, EmptyState, Input, Skeleton, cn } from "@luminbridge/ui";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   FileText,
   X,
@@ -11,6 +12,11 @@ import {
 } from "lucide-react";
 import { CustomOrder, CustomOrderProposal, User } from "@luminbridge/types";
 import { ChatBox } from "@/components/ChatBox";
+
+type FactoryChatOption = {
+  id: number;
+  label: string;
+};
 
 interface AdminCustomOrderListProps {
   customOrders: CustomOrder[];
@@ -43,12 +49,64 @@ export const AdminCustomOrderList = ({
     null,
   );
   const [proposalPriceInr, setProposalPriceInr] = useState<string>("");
+  const [isMounted, setIsMounted] = useState(false);
+  const [didAutoOpenChat, setDidAutoOpenChat] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const autoOpenFactoryChat = async () => {
+      if (!selectedCustomOrder) return;
+      if (didAutoOpenChat) return;
+
+      const orderHasUnread = unreadMessageOrderIds.includes(
+        selectedCustomOrder.id,
+      );
+      const orderHasNoProposals =
+        getProposalsForOrder(selectedCustomOrder.id).length === 0;
+
+      if (!orderHasUnread && !orderHasNoProposals) return;
+
+      try {
+        const res = await fetch(
+          `/api/messages?custom_order_id=${selectedCustomOrder.id}`,
+        );
+        if (!res.ok) return;
+
+        const data = (await res.json()) as Array<{
+          sender_id: number;
+          sender_role?: string;
+          created_at?: string;
+        }>;
+
+        // Pick the latest factory-origin message and open that chat thread directly.
+        const latestFactoryMessage = [...data]
+          .reverse()
+          .find((m) => m.sender_role === "factory");
+
+        if (latestFactoryMessage?.sender_id) {
+          setChatRecipientId(latestFactoryMessage.sender_id);
+          setChatRecipientRole("Factory");
+          setShowChat(true);
+          setShowFactoryDropdown(false);
+          setDidAutoOpenChat(true);
+        }
+      } catch {
+        // Keep default proposal view if auto-open fails.
+      }
+    };
+
+    void autoOpenFactoryChat();
+  }, [selectedCustomOrder, unreadMessageOrderIds, proposals, didAutoOpenChat]);
 
   const handleViewDetails = (order: CustomOrder) => {
     setSelectedCustomOrder(order);
     setShowChat(false);
     setChatRecipientId(null);
     setShowFactoryDropdown(false);
+    setDidAutoOpenChat(false);
   };
 
   const handleCloseDetails = () => {
@@ -56,6 +114,7 @@ export const AdminCustomOrderList = ({
     setShowChat(false);
     setChatRecipientId(null);
     setShowFactoryDropdown(false);
+    setDidAutoOpenChat(false);
   };
 
   const openChatWithBuyer = () => {
@@ -76,6 +135,77 @@ export const AdminCustomOrderList = ({
 
   const getProposalsForOrder = (orderId: number) => {
     return proposals.filter((p) => p.custom_order_id === orderId);
+  };
+
+  const getFactoryOptionsForSelectedOrder = (): FactoryChatOption[] => {
+    if (!selectedCustomOrder) {
+      return factories.map((f) => ({
+        id: f.id,
+        label: f.company_name || f.email,
+      }));
+    }
+
+    const proposalFactoryIds = Array.from(
+      new Set(
+        getProposalsForOrder(selectedCustomOrder.id)
+          .map((p) => p.factory_id)
+          .filter((id): id is number => typeof id === "number" && id > 0),
+      ),
+    );
+
+    if (proposalFactoryIds.length === 0) {
+      return factories.map((f) => ({
+        id: f.id,
+        label: f.company_name || f.email,
+      }));
+    }
+
+    return proposalFactoryIds.map((id) => {
+      const factory = factories.find((f) => f.id === id);
+      return {
+        id,
+        label: factory?.company_name || factory?.email || `Factory #${id}`,
+      };
+    });
+  };
+
+  const handleFactoryButtonClick = async () => {
+    const factoryOptions = getFactoryOptionsForSelectedOrder();
+
+    if (factoryOptions.length > 1) {
+      setShowFactoryDropdown((prev) => !prev);
+      return;
+    }
+
+    if (factoryOptions.length === 1) {
+      openChatWithFactory(factoryOptions[0].id);
+      return;
+    }
+
+    if (!selectedCustomOrder) return;
+
+    // Fallback: infer target from latest factory-origin message for this order.
+    try {
+      const res = await fetch(
+        `/api/messages?custom_order_id=${selectedCustomOrder.id}`,
+      );
+      if (!res.ok) return;
+
+      const data = (await res.json()) as Array<{
+        sender_id: number;
+        sender_role?: string;
+      }>;
+
+      const latestFactoryMessage = [...data]
+        .reverse()
+        .find((m) => m.sender_role === "factory");
+
+      if (latestFactoryMessage?.sender_id) {
+        openChatWithFactory(latestFactoryMessage.sender_id);
+      }
+    } catch {
+      // keep current state if lookup fails
+    }
   };
 
   return (
@@ -171,212 +301,278 @@ export const AdminCustomOrderList = ({
         )}
       </div>
 
-      {selectedCustomOrder && (
-        <div className="fixed inset-0 bg-zinc-950/20 dark:bg-zinc-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
-          <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-[3rem] custom-scrollbar">
-            <button
-              onClick={handleCloseDetails}
-              className="absolute top-8 right-8 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 transition-colors"
-            >
-              <X size={20} className="text-zinc-500 dark:text-zinc-400" />
-            </button>
-
-            <div className="flex justify-between items-center mb-8 pr-12">
-              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                Requirement Overview
-              </h2>
-              {!showChat && (
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={openChatWithBuyer}
-                    className="rounded-full px-4"
+      {isMounted &&
+        createPortal(
+          selectedCustomOrder ? (
+            <div className="fixed inset-0 z-[100] overflow-y-auto">
+              <div
+                className="fixed inset-0 bg-zinc-950/20 dark:bg-zinc-900/70 backdrop-blur-sm"
+                onClick={handleCloseDetails}
+              />
+              <div className="min-h-full p-4 sm:p-6 flex items-center justify-center">
+                <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-[2rem] sm:rounded-[3rem] custom-scrollbar z-10">
+                  <button
+                    onClick={handleCloseDetails}
+                    className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 dark:bg-zinc-800 transition-colors"
                   >
-                    <MessageSquare size={16} className="mr-2" />
-                    Buyer
-                  </Button>
-                  <div className="relative">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        setShowFactoryDropdown(!showFactoryDropdown)
-                      }
-                      className="rounded-full px-4"
-                    >
-                      <MessageSquare size={16} className="mr-2" />
-                      Factory
-                      <ChevronDown size={14} className="ml-1.5" />
-                    </Button>
-                    {showFactoryDropdown && (
-                      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-700 z-10 py-2">
-                        {factories.map((factory) => (
-                          <button
-                            key={factory.id}
-                            className="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
-                            onClick={() => openChatWithFactory(factory.id)}
+                    <X size={20} className="text-zinc-500 dark:text-zinc-400" />
+                  </button>
+
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 pr-10 sm:pr-12">
+                    <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                      Requirement Overview
+                    </h2>
+                    {(() => {
+                      const factoryOptions =
+                        getFactoryOptionsForSelectedOrder();
+                      const hasMultipleFactoryOptions =
+                        factoryOptions.length > 1;
+
+                      return (
+                        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                          <Button
+                            variant={
+                              showChat && chatRecipientRole === "Buyer"
+                                ? "secondary"
+                                : "outline"
+                            }
+                            size="sm"
+                            onClick={openChatWithBuyer}
+                            className="rounded-full px-3 sm:px-4"
                           >
-                            {factory.company_name || factory.email}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-              <div className="md:col-span-1">
-                <div className="aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-inner">
-                  {selectedCustomOrder.photo ? (
-                    <img
-                      src={selectedCustomOrder.photo}
-                      alt="Requirement"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300">
-                      <FileText size={48} strokeWidth={1} />
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="md:col-span-2 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2">
-                    Description
-                  </h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-3xl border border-zinc-100">
-                    {selectedCustomOrder.requirements}
-                  </p>
-                </div>
-                <div className="flex gap-4 mt-6">
-                  {selectedCustomOrder.status === "pending" && (
-                    <>
-                      <Button
-                        variant="outline"
-                        className="flex-1 rounded-2xl"
-                        onClick={() =>
-                          onUpdateStatus(selectedCustomOrder.id, "rejected")
-                        }
-                      >
-                        Reject
-                      </Button>
-                      <Button
-                        className="flex-1 rounded-2xl"
-                        onClick={() =>
-                          onUpdateStatus(selectedCustomOrder.id, "sourcing")
-                        }
-                      >
-                        Source Factories
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {showChat && chatRecipientId ? (
-              <div className="h-[450px]">
-                <ChatBox
-                  customOrderId={selectedCustomOrder.id}
-                  currentUser={currentUser}
-                  recipientId={chatRecipientId}
-                  recipientRole={chatRecipientRole}
-                />
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
-                  <span className="w-1.5 h-6 bg-white dark:bg-zinc-700 rounded-full"></span>
-                  <span className="text-zinc-900 dark:text-zinc-100">
-                    Factory Proposals
-                  </span>
-                </h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {getProposalsForOrder(selectedCustomOrder.id).length === 0 ? (
-                    <div className="py-12 text-center text-zinc-500 dark:text-zinc-400 italic bg-zinc-50/50 rounded-3xl border border-dashed">
-                      Waiting for factory responses...
-                    </div>
-                  ) : (
-                    getProposalsForOrder(selectedCustomOrder.id).map((p) => (
-                      <Card
-                        key={p.id}
-                        className="p-6 border-0 shadow-md bg-white dark:bg-zinc-800/30 rounded-3xl"
-                      >
-                        <div className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold font-mono text-zinc-700 dark:text-zinc-200">
-                              {p.factory_id}
-                            </div>
-                            <div>
-                              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
-                                Factory Proposal
-                              </p>
-                              <p className="text-xl font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                                ¥{p.price_cny}{" "}
-                                <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
-                                  / unit
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            {editingProposalId === p.id ? (
-                              <div className="flex items-center gap-2">
-                                <Input
-                                  placeholder="Pub. INR Price"
-                                  className="w-32 h-10 rounded-xl"
-                                  value={proposalPriceInr}
-                                  onChange={(e) =>
-                                    setProposalPriceInr(e.target.value)
-                                  }
-                                />
-                                <Button
-                                  size="sm"
-                                  className="rounded-xl h-10"
-                                  onClick={() => {
-                                    onPublishProposal(
-                                      p.id,
-                                      parseFloat(proposalPriceInr),
-                                    );
-                                    setEditingProposalId(null);
-                                  }}
-                                >
-                                  Push
-                                </Button>
-                              </div>
-                            ) : p.status === "pending" ? (
+                            <MessageSquare size={16} className="mr-2" />
+                            Buyer
+                          </Button>
+                          {hasMultipleFactoryOptions ? (
+                            <div className="relative">
                               <Button
+                                variant={
+                                  showChat && chatRecipientRole === "Factory"
+                                    ? "secondary"
+                                    : "outline"
+                                }
                                 size="sm"
-                                className="rounded-full"
-                                onClick={() => setEditingProposalId(p.id)}
+                                onClick={() => void handleFactoryButtonClick()}
+                                className="rounded-full px-3 sm:px-4"
                               >
-                                Publish to Buyer
+                                <MessageSquare size={16} className="mr-2" />
+                                Factory
+                                <ChevronDown size={14} className="ml-1.5" />
                               </Button>
-                            ) : (
-                              <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                Published @ ₹{p.price_inr}
-                              </span>
-                            )}
-                          </div>
+                              {showFactoryDropdown && (
+                                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-700 z-10 py-2">
+                                  {factoryOptions.map((factory) => (
+                                    <button
+                                      key={factory.id}
+                                      className="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                                      onClick={() =>
+                                        openChatWithFactory(factory.id)
+                                      }
+                                    >
+                                      {factory.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <Button
+                              variant={
+                                showChat && chatRecipientRole === "Factory"
+                                  ? "secondary"
+                                  : "outline"
+                              }
+                              size="sm"
+                              onClick={() => void handleFactoryButtonClick()}
+                              className="rounded-full px-3 sm:px-4"
+                            >
+                              <MessageSquare size={16} className="mr-2" />
+                              Factory
+                            </Button>
+                          )}
+                          {showChat && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setShowChat(false);
+                                setShowFactoryDropdown(false);
+                                setDidAutoOpenChat(true);
+                              }}
+                              className="rounded-full px-3 sm:px-4"
+                            >
+                              Proposals
+                            </Button>
+                          )}
                         </div>
-                        {p.notes && (
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 italic mt-2">
-                            "{p.notes}"
-                          </p>
+                      );
+                    })()}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    <div className="md:col-span-1">
+                      <div className="aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-inner">
+                        {selectedCustomOrder.photo ? (
+                          <img
+                            src={selectedCustomOrder.photo}
+                            alt="Requirement"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-zinc-700 dark:text-zinc-300">
+                            <FileText size={48} strokeWidth={1} />
+                          </div>
                         )}
-                      </Card>
-                    ))
+                      </div>
+                    </div>
+                    <div className="md:col-span-2 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2">
+                          Description
+                        </h3>
+                        <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-3xl border border-zinc-100">
+                          {selectedCustomOrder.requirements}
+                        </p>
+                      </div>
+                      <div className="flex gap-4 mt-6">
+                        {selectedCustomOrder.status === "pending" && (
+                          <>
+                            <Button
+                              variant="outline"
+                              className="flex-1 rounded-2xl"
+                              onClick={() =>
+                                onUpdateStatus(
+                                  selectedCustomOrder.id,
+                                  "rejected",
+                                )
+                              }
+                            >
+                              Reject
+                            </Button>
+                            <Button
+                              className="flex-1 rounded-2xl"
+                              onClick={() =>
+                                onUpdateStatus(
+                                  selectedCustomOrder.id,
+                                  "sourcing",
+                                )
+                              }
+                            >
+                              Source Factories
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {showChat && chatRecipientId ? (
+                    <div className="h-[380px] sm:h-[450px]">
+                      <ChatBox
+                        customOrderId={selectedCustomOrder.id}
+                        currentUser={currentUser}
+                        recipientId={chatRecipientId}
+                        recipientRole={chatRecipientRole}
+                      />
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
+                        <span className="w-1.5 h-6 bg-white dark:bg-zinc-700 rounded-full"></span>
+                        <span className="text-zinc-900 dark:text-zinc-100">
+                          Factory Proposals
+                        </span>
+                      </h3>
+                      <div className="grid grid-cols-1 gap-4">
+                        {getProposalsForOrder(selectedCustomOrder.id).length ===
+                        0 ? (
+                          <div className="py-12 text-center text-zinc-500 dark:text-zinc-400 italic bg-zinc-50/50 rounded-3xl border border-dashed">
+                            Waiting for factory responses...
+                          </div>
+                        ) : (
+                          getProposalsForOrder(selectedCustomOrder.id).map(
+                            (p) => (
+                              <Card
+                                key={p.id}
+                                className="p-6 border-0 shadow-md bg-white dark:bg-zinc-800/30 rounded-3xl"
+                              >
+                                <div className="flex justify-between items-center mb-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold font-mono text-zinc-700 dark:text-zinc-200">
+                                      {p.factory_id}
+                                    </div>
+                                    <div>
+                                      <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
+                                        Factory Proposal
+                                      </p>
+                                      <p className="text-xl font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                                        ¥{p.price_cny}{" "}
+                                        <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                                          / unit
+                                        </span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="text-right">
+                                    {editingProposalId === p.id ? (
+                                      <div className="flex items-center gap-2">
+                                        <Input
+                                          placeholder="Pub. INR Price"
+                                          className="w-32 h-10 rounded-xl"
+                                          value={proposalPriceInr}
+                                          onChange={(e) =>
+                                            setProposalPriceInr(e.target.value)
+                                          }
+                                        />
+                                        <Button
+                                          size="sm"
+                                          className="rounded-xl h-10"
+                                          onClick={() => {
+                                            onPublishProposal(
+                                              p.id,
+                                              parseFloat(proposalPriceInr),
+                                            );
+                                            setEditingProposalId(null);
+                                          }}
+                                        >
+                                          Push
+                                        </Button>
+                                      </div>
+                                    ) : p.status === "pending" ? (
+                                      <Button
+                                        size="sm"
+                                        className="rounded-full"
+                                        onClick={() =>
+                                          setEditingProposalId(p.id)
+                                        }
+                                      >
+                                        Publish to Buyer
+                                      </Button>
+                                    ) : (
+                                      <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                        Published @ ₹{p.price_inr}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                {p.notes && (
+                                  <p className="text-xs text-zinc-500 dark:text-zinc-400 italic mt-2">
+                                    "{p.notes}"
+                                  </p>
+                                )}
+                              </Card>
+                            ),
+                          )
+                        )}
+                      </div>
+                    </div>
                   )}
-                </div>
+                </Card>
               </div>
-            )}
-          </Card>
-        </div>
-      )}
+            </div>
+          ) : null,
+          document.body,
+        )}
     </>
   );
 };

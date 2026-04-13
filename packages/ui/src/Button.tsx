@@ -23,17 +23,22 @@ export function Button({
   title?: string;
 }) {
   const variants = {
-    primary: "bg-zinc-50 text-zinc-900 hover:bg-zinc-200 shadow-sm active:scale-[0.97]",
-    secondary: "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 shadow-sm active:scale-[0.97]",
-    outline: "bg-transparent border border-zinc-700 text-zinc-100 hover:bg-zinc-800 shadow-sm active:scale-[0.97]",
-    danger: "bg-red-500 text-white hover:bg-red-600 shadow-sm active:scale-[0.97]",
-    ghost: "bg-transparent hover:bg-zinc-800/50 text-zinc-400 hover:text-zinc-100"
+    primary:
+      "bg-zinc-50 text-zinc-900 hover:bg-zinc-200 shadow-sm active:scale-[0.97]",
+    secondary:
+      "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 shadow-sm active:scale-[0.97]",
+    outline:
+      "bg-transparent border border-zinc-700 text-zinc-100 hover:bg-zinc-800 shadow-sm active:scale-[0.97]",
+    danger:
+      "bg-red-500 text-white hover:bg-red-600 shadow-sm active:scale-[0.97]",
+    ghost:
+      "bg-transparent hover:bg-zinc-800/50 text-zinc-400 hover:text-zinc-100",
   };
 
   const sizes = {
     sm: "px-4 py-1.5 text-sm",
     md: "px-5 py-2.5",
-    lg: "px-8 py-3.5 text-lg"
+    lg: "px-8 py-3.5 text-lg",
   };
 
   const isDisabled = disabled || loading;

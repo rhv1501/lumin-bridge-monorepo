@@ -42,6 +42,10 @@ export function useRealtimeData<T>(
       }
     };
 
+    // Load the initial snapshot immediately so realtime-backed views have data
+    // even before the first refresh event arrives.
+    void performRefresh();
+
     (async () => {
       try {
         // Dynamic import so Pusher doesn't bloat initial bundle

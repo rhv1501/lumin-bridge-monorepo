@@ -36,6 +36,12 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
   }
 
   // Realtime refresh for impacted portals
+  let relation: {
+    factory_id: number;
+    custom_order_id: number;
+    buyer_id: number;
+  } | null = null;
+
   try {
     const rows = await sql<{
       factory_id: number;
@@ -53,20 +59,45 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     `;
 
     const r = rows[0];
+    relation = r ?? null;
+
+    // Publishing a proposal should also update the parent custom order status,
+    // so buyer/admin lists reflect availability without manual refresh.
+    if (status === "published" && r?.custom_order_id) {
+      await sql`
+        UPDATE custom_orders
+        SET status = 'proposal_sent'
+        WHERE id = ${r.custom_order_id}
+      `;
+    }
+
+    const recipientIds = [r?.factory_id, r?.buyer_id].filter(Boolean) as number[];
+
     await Promise.all([
       refreshAdmins({
         resource: "custom-order-proposals",
         action: "updated",
         id: proposalId,
       }),
-      refreshUsers(
-        [r?.factory_id, r?.buyer_id].filter(Boolean) as number[],
-        {
-          resource: "custom-order-proposals",
-          action: "updated",
-          id: proposalId,
-        },
-      ),
+      refreshUsers(recipientIds, {
+        resource: "custom-order-proposals",
+        action: "updated",
+        id: proposalId,
+      }),
+      ...(r?.custom_order_id
+        ? [
+            refreshAdmins({
+              resource: "custom-orders",
+              action: "updated",
+              id: r.custom_order_id,
+            }),
+            refreshUsers(recipientIds, {
+              resource: "custom-orders",
+              action: "updated",
+              id: r.custom_order_id,
+            }),
+          ]
+        : []),
     ]);
   } catch (e) {
     console.error("Failed to publish proposal refresh", e);
@@ -95,14 +126,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         );
 
         if (status === "published") {
-          const orders = await sql<{ buyer_id: number }[]>`
-            SELECT buyer_id::int as buyer_id
-            FROM custom_orders
-            WHERE id = ${proposal.custom_order_id}
-            LIMIT 1
-          `;
-
-          const buyerId = orders[0]?.buyer_id;
+          const buyerId = relation?.buyer_id;
           if (buyerId) {
             await createNotification(
               buyerId,

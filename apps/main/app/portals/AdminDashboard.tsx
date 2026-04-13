@@ -24,6 +24,7 @@ import { ProductTable } from "@/components/admin/ProductTable";
 import { OrderTable } from "@/components/admin/OrderTable";
 import { AdminCustomOrderList } from "@/components/admin/AdminCustomOrderList";
 import { ProfileSettings } from "@/components/ProfileSettings";
+import { useRealtimeData } from "@/portals/useRealtimeData";
 import {
   User,
   Product,
@@ -78,15 +79,26 @@ export const AdminDashboard = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>(initialProducts || []);
   const [orders, setOrders] = useState<Order[]>(initialOrders || []);
-  const [customOrders, setCustomOrders] = useState<CustomOrder[]>(
-    initialCustomOrders || [],
-  );
-  const [proposals, setProposals] = useState<CustomOrderProposal[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [settings, setSettings] = useState<Settings>(
     initialSettings || { exchange_rate: "12.0", admin_markup: "1.3" },
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+
+  const customOrders = useRealtimeData<CustomOrder[]>(
+    user.id,
+    "custom-orders",
+    () => fetch("/api/custom-orders?role=admin").then((r) => r.json()),
+    initialCustomOrders || [],
+  );
+
+  const proposals = useRealtimeData<CustomOrderProposal[]>(
+    user.id,
+    "custom-order-proposals",
+    () => fetch("/api/custom-order-proposals?role=admin").then((r) => r.json()),
+    [],
+  );
 
   const {
     register: registerSettings,
@@ -94,21 +106,19 @@ export const AdminDashboard = ({
     setValue: setSettingsValue,
   } = useForm<Settings>();
 
-  const fetchData = async () => {
-    setIsLoading(true);
+  const fetchData = async (silent = false) => {
+    if (!silent && !hasLoadedOnce) {
+      setIsLoading(true);
+    }
     try {
-      const [pRes, oRes, coRes, propRes, uRes, sRes] = await Promise.all([
+      const [pRes, oRes, uRes, sRes] = await Promise.all([
         fetch("/api/products?role=admin"),
         fetch("/api/orders?role=admin"),
-        fetch("/api/custom-orders?role=admin"),
-        fetch("/api/custom-order-proposals?role=admin"),
         fetch("/api/admin/users"),
         fetch("/api/settings"),
       ]);
       if (pRes.ok) setProducts(await pRes.json());
       if (oRes.ok) setOrders(await oRes.json());
-      if (coRes.ok) setCustomOrders(await coRes.json());
-      if (propRes.ok) setProposals(await propRes.json());
       if (uRes.ok) setUsers(await uRes.json());
       if (sRes.ok) {
         const sData = await sRes.json();
@@ -120,12 +130,19 @@ export const AdminDashboard = ({
       console.error("Failed to fetch admin data:", error);
       toast.error("Failed to refresh dashboard");
     } finally {
-      setIsLoading(false);
+      if (!hasLoadedOnce) {
+        setHasLoadedOnce(true);
+      }
+      if (!silent && !hasLoadedOnce) {
+        setIsLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    if (!initialProducts) fetchData();
+    if (!initialProducts) void fetchData(false);
+
+    return undefined;
   }, []);
 
   const handleSettingsUpdate = async (data: Settings) => {
@@ -268,7 +285,7 @@ export const AdminDashboard = ({
                       });
                       if (res.ok) {
                         toast.success("User updated");
-                        fetchData();
+                        fetchData(true);
                       }
                     }}
                     onDelete={async (id) => {
@@ -278,7 +295,7 @@ export const AdminDashboard = ({
                         });
                         if (res.ok) {
                           toast.success("User deleted");
-                          fetchData();
+                          fetchData(true);
                         }
                       }
                     }}
@@ -299,7 +316,7 @@ export const AdminDashboard = ({
                     });
                     if (res.ok) {
                       toast.success("Product updated");
-                      fetchData();
+                      fetchData(true);
                     }
                   }}
                   onDelete={async (id) => {
@@ -309,7 +326,7 @@ export const AdminDashboard = ({
                       });
                       if (res.ok) {
                         toast.success("Product deleted");
-                        fetchData();
+                        fetchData(true);
                       }
                     }
                   }}
@@ -342,7 +359,7 @@ export const AdminDashboard = ({
                     );
                     if (res.ok) {
                       toast.success("Proposal published to buyer");
-                      fetchData();
+                      fetchData(true);
                     }
                   }}
                   onUpdateStatus={async (id, status) => {
@@ -353,7 +370,7 @@ export const AdminDashboard = ({
                     });
                     if (res.ok) {
                       toast.success(`Status updated to ${status}`);
-                      fetchData();
+                      fetchData(true);
                     }
                   }}
                 />

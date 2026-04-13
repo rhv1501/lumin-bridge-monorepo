@@ -39,14 +39,14 @@ export default function BuyerPageClient({
   const orders = useRealtimeData<Order[]>(
     user.id,
     "orders",
-    () => fetch(`/api/orders?userId=${user.id}`).then((r) => r.json()),
+    () => fetch(`/api/orders?role=buyer&userId=${user.id}`).then((r) => r.json()),
     initialOrders,
   );
 
   const customOrders = useRealtimeData<CustomOrder[]>(
     user.id,
     "custom-orders",
-    () => fetch(`/api/custom-orders?userId=${user.id}`).then((r) => r.json()),
+    () => fetch(`/api/custom-orders?role=buyer&userId=${user.id}`).then((r) => r.json()),
     initialCustomOrders,
   );
 
