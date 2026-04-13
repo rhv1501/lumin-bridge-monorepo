@@ -179,7 +179,7 @@ export default function PortalShellClient({
             <button
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
-              className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-950 dark:text-white transition-colors focus:outline-none rounded-lg lg:hidden"
+              className="p-2 text-zinc-500 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 transition-colors focus:outline-none rounded-lg lg:hidden"
             >
               <Menu size={22} />
             </button>
@@ -208,121 +208,128 @@ export default function PortalShellClient({
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-               transition={{ type: "spring", damping: 28, stiffness: 240 }}
-               className="fixed top-0 right-0 h-full w-80 bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 z-50 lg:hidden flex flex-col"
-             >
-               {/* Header */}
-               <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-900 flex-shrink-0">
-                 <span className="font-serif font-bold text-base text-zinc-950 dark:text-zinc-100 uppercase tracking-widest opacity-50">
-                   Menu
-                 </span>
-                 <button
-                   onClick={() => setDrawerOpen(false)}
-                   aria-label="Close menu"
-                   className="p-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-950 dark:text-white transition-colors rounded-lg focus:outline-none"
-                 >
-                   <X size={20} />
-                 </button>
-               </div>
+              transition={{ type: "spring", damping: 28, stiffness: 240 }}
+              className="fixed top-0 right-0 h-full w-80 bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 z-50 lg:hidden flex flex-col"
+            >
+              {/* Header */}
+              <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-900 flex-shrink-0">
+                <span className="font-serif font-bold text-base text-zinc-950 dark:text-zinc-100 uppercase tracking-widest opacity-50">
+                  Menu
+                </span>
+                <button
+                  onClick={() => setDrawerOpen(false)}
+                  aria-label="Close menu"
+                  className="p-1.5 text-zinc-500 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 transition-colors rounded-lg focus:outline-none"
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
               {/* User card */}
-               <div className="px-6 py-6 border-b border-zinc-300 dark:border-zinc-900">
-                 {/* Avatar + name row */}
-                 <div className="flex items-center gap-4 mb-4">
-                   <div className="w-12 h-12 rounded-2xl bg-black dark:bg-zinc-900 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 select-none border border-zinc-200 dark:border-zinc-800">
-                     {userInitials}
-                   </div>
-                   <div className="min-w-0">
-                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate leading-tight">
-                       {user.company_name || user.email}
-                     </p>
-                     {user.company_name && (
-                       <p className="text-[10px] text-zinc-500 truncate mt-1">
-                         {user.email}
-                       </p>
-                     )}
-                   </div>
-                 </div>
- 
-                 {/* Role badge */}
-                 <span
-                   className={`inline-block text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${badge}`}
-                 >
-                   {label}
-                 </span>
-               </div>
+              <div className="px-6 py-6 border-b border-zinc-300 dark:border-zinc-900">
+                {/* Avatar + name row */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-black dark:bg-zinc-900 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 select-none border border-zinc-200 dark:border-zinc-800">
+                    {userInitials}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate leading-tight">
+                      {user.company_name || user.email}
+                    </p>
+                    {user.company_name && (
+                      <p className="text-[10px] text-zinc-500 truncate mt-1">
+                        {user.email}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-               {/* Navigation Tabs */}
-               {tabs.length > 0 && (
-                 <div className="px-4 py-6 space-y-1">
-                   <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                     Navigation
-                   </p>
-                   {tabs.map((tab) => (
-                     <button
-                       key={tab.id}
-                       onClick={() => {
-                         onTabChange?.(tab.id);
-                         setDrawerOpen(false);
-                       }}
-                       className={cn(
-                         "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200",
-                         activeTab === tab.id
-                           ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-lg shadow-black/20"
-                           : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100 hover:bg-white dark:bg-zinc-900/50"
-                       )}
-                     >
-                       <tab.icon size={18} className={activeTab === tab.id ? "text-zinc-950 dark:text-white" : "text-zinc-500"} />
-                       <span>{tab.label}</span>
-                       {tab.badge && (
-                         <span className="ml-auto w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-                       )}
-                     </button>
-                   ))}
-                 </div>
-               )}
+                {/* Role badge */}
+                <span
+                  className={`inline-block text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${badge}`}
+                >
+                  {label}
+                </span>
+              </div>
 
-               {/* Details */}
-               {(user.mobile_number ||
-                 user.wechat_id ||
-                 user.whatsapp_number) && (
-                 <div className="px-6 py-6 space-y-3 border-t border-zinc-300 dark:border-zinc-900">
-                   {user.mobile_number && (
-                     <InfoLine label="Mobile" value={user.mobile_number} />
-                   )}
-                   {user.wechat_id && (
-                     <InfoLine label="WeChat" value={user.wechat_id} />
-                   )}
-                   {user.whatsapp_number && (
-                     <InfoLine label="WhatsApp" value={user.whatsapp_number} />
-                   )}
-                 </div>
-               )}
+              {/* Navigation Tabs */}
+              {tabs.length > 0 && (
+                <div className="px-4 py-6 space-y-1">
+                  <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                    Navigation
+                  </p>
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        onTabChange?.(tab.id);
+                        setDrawerOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200",
+                        activeTab === tab.id
+                          ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-lg shadow-black/20"
+                          : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:text-zinc-100 hover:bg-white dark:bg-zinc-900/50",
+                      )}
+                    >
+                      <tab.icon
+                        size={18}
+                        className={
+                          activeTab === tab.id
+                            ? "text-zinc-950 dark:text-white"
+                            : "text-zinc-500"
+                        }
+                      />
+                      <span>{tab.label}</span>
+                      {tab.badge && (
+                        <span className="ml-auto w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Details */}
+              {(user.mobile_number ||
+                user.wechat_id ||
+                user.whatsapp_number) && (
+                <div className="px-6 py-6 space-y-3 border-t border-zinc-300 dark:border-zinc-900">
+                  {user.mobile_number && (
+                    <InfoLine label="Mobile" value={user.mobile_number} />
+                  )}
+                  {user.wechat_id && (
+                    <InfoLine label="WeChat" value={user.wechat_id} />
+                  )}
+                  {user.whatsapp_number && (
+                    <InfoLine label="WhatsApp" value={user.whatsapp_number} />
+                  )}
+                </div>
+              )}
 
               <div className="flex-1" />
 
-               {/* Sign out */}
-               <div className="px-6 pb-8 pt-6 border-t border-zinc-300 dark:border-zinc-900 bg-white dark:bg-zinc-900/30">
-                 <button
-                   onClick={() => {
-                     setDrawerOpen(false);
-                     setChangePwdOpen(true);
-                   }}
-                   className="w-full mb-3 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-semibold hover:text-zinc-950 dark:text-white hover:bg-zinc-100 dark:bg-zinc-800 transition-all active:scale-[0.98]"
-                 >
-                   Change password
-                 </button>
-                 <button
-                   onClick={() => {
-                     setDrawerOpen(false);
-                     onLogout();
-                   }}
-                   className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-zinc-50 text-zinc-950 text-sm font-bold hover:bg-white transition-all active:scale-[0.98] shadow-lg shadow-black/20"
-                 >
-                   <LogOut size={16} />
-                   Log out
-                 </button>
-               </div>
+              {/* Sign out */}
+              <div className="px-6 pb-8 pt-6 border-t border-zinc-300 dark:border-zinc-900 bg-white dark:bg-zinc-900/30">
+                <button
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    setChangePwdOpen(true);
+                  }}
+                  className="w-full mb-3 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-sm font-semibold hover:text-zinc-950 dark:text-white hover:bg-zinc-100 dark:bg-zinc-800 transition-all active:scale-[0.98]"
+                >
+                  Change password
+                </button>
+                <button
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    onLogout();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-zinc-50 text-zinc-950 text-sm font-bold hover:bg-white transition-all active:scale-[0.98] shadow-lg shadow-black/20"
+                >
+                  <LogOut size={16} />
+                  Log out
+                </button>
+              </div>
             </motion.aside>
           </>
         )}
@@ -406,7 +413,7 @@ export default function PortalShellClient({
         )}
       </AnimatePresence>
 
-       <main className="max-w-7xl mx-auto px-4 sm:px-6 mt-8">{children}</main>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 mt-8">{children}</main>
 
       <footer className="py-12 border-t border-zinc-200 dark:border-zinc-800 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -436,16 +443,18 @@ export default function PortalShellClient({
   );
 }
 
- function InfoLine({ label, value }: { label: string; value: string }) {
-   return (
-     <div className="flex items-baseline gap-2">
-       <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 w-16 flex-shrink-0">
-         {label}
-       </span>
-       <span className="text-sm text-zinc-700 dark:text-zinc-300 truncate">{value}</span>
-     </div>
-   );
- }
+function InfoLine({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 w-16 flex-shrink-0">
+        {label}
+      </span>
+      <span className="text-sm text-zinc-700 dark:text-zinc-300 truncate">
+        {value}
+      </span>
+    </div>
+  );
+}
 
 type IconProps = {
   size?: number;
