@@ -157,7 +157,9 @@ export const UserTable = ({
                           <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                             {u.company_name || "Individual"}
                           </div>
-                          <div className="text-sm text-zinc-500">{u.email}</div>
+                          <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                            {u.email}
+                          </div>
                         </div>
                       )}
                     </td>
@@ -198,7 +200,7 @@ export const UserTable = ({
                             </div>
                           )}
                           {u.wechat_id && (
-                            <div className="text-zinc-500">
+                            <div className="text-zinc-500 dark:text-zinc-400">
                               💬 {u.wechat_id}
                             </div>
                           )}

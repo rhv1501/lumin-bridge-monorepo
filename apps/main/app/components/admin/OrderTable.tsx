@@ -83,16 +83,18 @@ export const OrderTable = ({ orders, isLoading }: OrderTableProps) => {
                   key={o.id}
                   className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group"
                 >
-                  <td className="p-6 font-mono text-xs text-zinc-500">
+                  <td className="p-6 font-mono text-xs text-zinc-500 dark:text-zinc-400">
                     #{o.id}
                   </td>
-                  <td className="p-6 text-sm font-semibold text-zinc-900">
+                  <td className="p-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                     {o.product_name}
                   </td>
-                  <td className="p-6 text-sm text-zinc-600 font-medium">
+                  <td className="p-6 text-sm text-zinc-600 dark:text-zinc-300 font-medium">
                     {o.buyer_company || o.buyer_email}
                   </td>
-                  <td className="p-6 font-mono text-sm">{o.quantity}</td>
+                  <td className="p-6 font-mono text-sm text-zinc-700 dark:text-zinc-300">
+                    {o.quantity}
+                  </td>
                   <td className="p-6">
                     <span
                       className={cn(

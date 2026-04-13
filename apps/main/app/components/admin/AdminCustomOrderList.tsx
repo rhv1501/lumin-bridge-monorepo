@@ -151,7 +151,7 @@ export const AdminCustomOrderList = ({
                         {co.status}
                       </span>
                     </div>
-                    <p className="text-sm text-zinc-500 line-clamp-2 leading-relaxed mb-4">
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed mb-4">
                       {co.requirements}
                     </p>
                   </div>
@@ -172,7 +172,7 @@ export const AdminCustomOrderList = ({
       </div>
 
       {selectedCustomOrder && (
-        <div className="fixed inset-0 bg-white dark:bg-zinc-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+        <div className="fixed inset-0 bg-zinc-950/20 dark:bg-zinc-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
           <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative border-0 shadow-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-[3rem] custom-scrollbar">
             <button
               onClick={handleCloseDetails}
@@ -182,7 +182,7 @@ export const AdminCustomOrderList = ({
             </button>
 
             <div className="flex justify-between items-center mb-8 pr-12">
-              <h2 className="text-2xl font-bold tracking-tight">
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                 Requirement Overview
               </h2>
               {!showChat && (
@@ -214,7 +214,7 @@ export const AdminCustomOrderList = ({
                         {factories.map((factory) => (
                           <button
                             key={factory.id}
-                            className="w-full text-left px-4 py-2 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                            className="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
                             onClick={() => openChatWithFactory(factory.id)}
                           >
                             {factory.company_name || factory.email}
@@ -291,7 +291,9 @@ export const AdminCustomOrderList = ({
               <div className="space-y-6">
                 <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
                   <span className="w-1.5 h-6 bg-white dark:bg-zinc-700 rounded-full"></span>
-                  Factory Proposals
+                  <span className="text-zinc-900 dark:text-zinc-100">
+                    Factory Proposals
+                  </span>
                 </h3>
                 <div className="grid grid-cols-1 gap-4">
                   {getProposalsForOrder(selectedCustomOrder.id).length === 0 ? (
@@ -306,14 +308,14 @@ export const AdminCustomOrderList = ({
                       >
                         <div className="flex justify-between items-center mb-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold font-mono">
+                            <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center text-xs font-bold font-mono text-zinc-700 dark:text-zinc-200">
                               {p.factory_id}
                             </div>
                             <div>
                               <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
                                 Factory Proposal
                               </p>
-                              <p className="text-xl font-mono font-bold">
+                              <p className="text-xl font-mono font-bold text-zinc-900 dark:text-zinc-100">
                                 ¥{p.price_cny}{" "}
                                 <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
                                   / unit
@@ -362,7 +364,7 @@ export const AdminCustomOrderList = ({
                           </div>
                         </div>
                         {p.notes && (
-                          <p className="text-xs text-zinc-500 italic mt-2">
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 italic mt-2">
                             "{p.notes}"
                           </p>
                         )}

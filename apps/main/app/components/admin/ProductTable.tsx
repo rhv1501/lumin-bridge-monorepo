@@ -162,7 +162,7 @@ export const ProductTable = ({
                           className="w-10 h-10 object-cover rounded-xl shadow-sm"
                         />
                       )}
-                      <span className="font-semibold text-zinc-900">
+                      <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                         {p.name}
                       </span>
                     </div>
@@ -182,13 +182,13 @@ export const ProductTable = ({
                       </span>
                     )}
                   </td>
-                  <td className="p-6 text-sm text-zinc-500 font-medium">
+                  <td className="p-6 text-sm text-zinc-500 dark:text-zinc-400 font-medium">
                     {p.factory_company}
                   </td>
                   <td className="p-6 font-mono text-sm text-zinc-500 dark:text-zinc-400">
                     ¥{p.factory_price_cny}
                   </td>
-                  <td className="p-6 font-mono text-sm font-bold text-zinc-900">
+                  <td className="p-6 font-mono text-sm font-bold text-zinc-900 dark:text-zinc-100">
                     {editingProduct === p.id ? (
                       <Input
                         type="number"
