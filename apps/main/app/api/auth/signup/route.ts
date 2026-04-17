@@ -17,7 +17,7 @@ async function sendVerificationEmail(req: Request, email: string, token: string)
   const verifyUrl = buildVerifyUrl(req, token);
   await sendEmail({
     to: email,
-    subject: "Verify your LuminaBridge account",
+    subject: "Verify your luminbridge account",
     text: `Please verify your email by clicking this link: ${verifyUrl}`,
     html: `<p>Please verify your email by clicking the link below:</p><p><a href="${verifyUrl}">${verifyUrl}</a></p>`,
   });

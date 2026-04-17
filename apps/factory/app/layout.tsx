@@ -4,14 +4,14 @@ import PWARegister from "./PWARegister";
 import { ThemeProvider } from "./components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "B2B Marketplace",
-  description: "B2B Marketplace",
+  title: "luminbridge",
+  description: "luminbridge",
   manifest: "/manifest.webmanifest",
-  applicationName: "B2B Marketplace",
+  applicationName: "luminbridge",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "B2B Marketplace",
+    title: "luminbridge",
   },
   icons: {
     icon: "/icon.svg",

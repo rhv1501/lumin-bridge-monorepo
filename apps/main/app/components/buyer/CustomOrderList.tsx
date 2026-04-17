@@ -362,7 +362,7 @@ export const CustomOrderList = ({
                                       </div>
                                       <div className="p-4 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/5 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/10">
                                         <span className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1 block">
-                                          Lumina Verified
+                                          luminbridge Verified
                                         </span>
                                         <span className="text-lg font-bold">
                                           Factory Secured

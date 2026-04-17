@@ -111,7 +111,7 @@ export async function PATCH(
 
     await sendEmail({
       to: user.email,
-      subject: "Your LuminaBridge account is approved",
+      subject: "Your luminbridge account is approved",
       text: `Your account has been approved.\n\nLogin ID: ${user.email}\nTemporary Password: ${temporaryPassword}\n\nPlease login and change your password from profile.`,
     });
 
@@ -150,7 +150,7 @@ export async function PATCH(
 
   await sendEmail({
     to: user.email,
-    subject: "Your LuminaBridge account request was not approved",
+    subject: "Your luminbridge account request was not approved",
     text: `Your account request has been disapproved.${note ? `\n\nReason: ${note}` : ""}`,
   });
 

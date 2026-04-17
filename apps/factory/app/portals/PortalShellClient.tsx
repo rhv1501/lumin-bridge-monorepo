@@ -128,7 +128,7 @@ export default function PortalShellClient({
               <Globe size={18} />
             </div>
             <span className="font-serif font-bold text-xl tracking-tight truncate sm:whitespace-nowrap">
-              LuminaBridge
+              luminbridge
             </span>
           </div>
 
@@ -421,9 +421,7 @@ export default function PortalShellClient({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 opacity-50">
             <Globe size={16} />
-            <span className="font-serif font-bold text-sm">
-              LuminaBridge Global
-            </span>
+            <span className="font-serif font-bold text-sm">luminbridge</span>
           </div>
           <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             <a href="#" className="hover:text-zinc-900 transition-colors">
@@ -437,7 +435,7 @@ export default function PortalShellClient({
             </a>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            © 2026 LuminaBridge B2B. All rights reserved.
+            © 2026 luminbridge. All rights reserved.
           </p>
         </div>
       </footer>

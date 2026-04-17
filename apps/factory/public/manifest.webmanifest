@@ -1,7 +1,7 @@
 {
-  "name": "B2B Marketplace",
-  "short_name": "B2B",
-  "description": "B2B Marketplace",
+  "name": "luminbridge",
+  "short_name": "luminbridge",
+  "description": "luminbridge",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

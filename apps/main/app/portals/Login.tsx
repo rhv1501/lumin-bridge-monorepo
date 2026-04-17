@@ -114,7 +114,9 @@ export const Login = ({
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white rounded-2xl mb-4">
             <Globe size={32} />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-zinc-950 dark:text-white">LuminaBridge</h1>
+          <h1 className="text-3xl font-serif font-bold text-zinc-950 dark:text-white">
+            luminbridge
+          </h1>
           <p className="text-zinc-500 dark:text-zinc-400 mt-2 italic">
             {role === "admin"
               ? "Admin Portal"

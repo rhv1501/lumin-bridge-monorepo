@@ -13,7 +13,7 @@ export const generateInvoice = (order: Order, currentUser?: User) => {
   doc.setFontSize(24);
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.text('LuminaBridge', 14, 25);
+  doc.text('luminbridge', 14, 25);
   doc.setFontSize(12);
   doc.text('INVOICE / PURCHASE ORDER', 130, 25);
   doc.setTextColor(0, 0, 0);
@@ -50,10 +50,10 @@ export const generateInvoice = (order: Order, currentUser?: User) => {
     headStyles: { fillColor: primaryColor, textColor: [255, 255, 255] },
   });
 
-  doc.save(`LuminaBridge_Invoice_ORD-${order.id}.pdf`);
+  doc.save(`luminbridge_Invoice_ORD-${order.id}.pdf`);
 };
 
-export const exportOrdersToExcel = (orders: Order[], filename: string = 'LuminaBridge_Orders') => {
+export const exportOrdersToExcel = (orders: Order[], filename: string = 'luminbridge_Orders') => {
   const worksheetData = orders.map(o => ({
     'Order ID': o.id,
     'Date': new Date(o.created_at).toLocaleDateString(),
@@ -80,7 +80,7 @@ export const generateCustomOrderInvoice = (customOrder: CustomOrder, proposal: C
   doc.setFontSize(24);
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.text('LuminaBridge', 14, 25);
+  doc.text('luminbridge', 14, 25);
   doc.setFontSize(12);
   doc.text('CUSTOM PURCHASE ORDER', 125, 25);
   
@@ -108,5 +108,5 @@ export const generateCustomOrderInvoice = (customOrder: CustomOrder, proposal: C
     headStyles: { fillColor: primaryColor, textColor: [255, 255, 255] },
   });
 
-  doc.save(`LuminaBridge_PO_CUST-${customOrder.id}.pdf`);
+  doc.save(`luminbridge_PO_CUST-${customOrder.id}.pdf`);
 };
