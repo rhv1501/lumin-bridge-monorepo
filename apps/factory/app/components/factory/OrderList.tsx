@@ -1,9 +1,10 @@
 "use client";
 import { exportOrdersToExcel, generateInvoice } from "@luminbridge/db/client";
 import { Button, Card, EmptyState, Skeleton, cn } from "@luminbridge/ui";
-import React from "react";
-import { ShoppingCart, Download, FileSpreadsheet } from "lucide-react";
+import React, { useState } from "react";
+import { ShoppingCart, Download, FileSpreadsheet, Eye } from "lucide-react";
 import { Order } from "@luminbridge/types";
+import { OrderDetailsModal } from "./OrderDetailsModal";
 
 interface OrderListProps {
   orders: Order[];
@@ -16,6 +17,8 @@ export const OrderList = ({
   isLoading,
   onUpdateStatus,
 }: OrderListProps) => {
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl">
       <div className="flex justify-between items-center p-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
@@ -98,7 +101,8 @@ export const OrderList = ({
               orders.map((o) => (
                 <tr
                   key={o.id}
-                  className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group"
+                  onClick={() => setSelectedOrder(o)}
+                  className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group cursor-pointer"
                 >
                   <td className="p-4 font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">
                     #{o.id}
@@ -179,6 +183,11 @@ export const OrderList = ({
           </tbody>
         </table>
       </div>
+
+      <OrderDetailsModal
+        order={selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
     </Card>
   );
 };

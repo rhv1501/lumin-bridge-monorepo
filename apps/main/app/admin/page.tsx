@@ -1,4 +1,9 @@
-import { getAdminCustomOrders, getAdminOrders, getAdminProducts, getSettings } from "@luminbridge/db";
+import {
+  getAdminCustomOrders,
+  getAdminOrders,
+  getAdminProducts,
+  getSettings,
+} from "@luminbridge/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { User } from "@luminbridge/types";

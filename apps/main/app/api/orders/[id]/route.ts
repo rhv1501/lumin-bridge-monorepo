@@ -148,3 +148,68 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
 
   return jsonNoStore({ success: true });
 }
+
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+  const orderId = Number.parseInt(id, 10);
+  if (!Number.isFinite(orderId)) return badRequest("Invalid order ID");
+
+  // Get order details before deletion for realtime refresh
+  try {
+    const orderDetails = await sql<{
+      buyer_id: number;
+      factory_id: number;
+      product_name: string | null;
+    }[]>`
+      SELECT
+        o.buyer_id::int as buyer_id,
+        p.factory_id::int as factory_id,
+        p.name as product_name
+      FROM orders o
+      JOIN products p ON o.product_id = p.id
+      WHERE o.id = ${orderId}
+      LIMIT 1
+    `;
+
+    // Delete the order
+    await sql`DELETE FROM orders WHERE id = ${orderId}`;
+
+    // Realtime refresh for all impacted portals
+    if (orderDetails.length > 0) {
+      const details = orderDetails[0];
+      await Promise.all([
+        refreshAdmins({ resource: "orders", action: "deleted", id: orderId }),
+        refreshUsers(
+          [details.buyer_id, details.factory_id].filter(Boolean) as number[],
+          { resource: "orders", action: "deleted", id: orderId },
+        ),
+      ]);
+
+      // Create notification
+      const admins = await sql<{ id: number }[]>`
+        SELECT id::int as id FROM users WHERE role = 'admin' LIMIT 1
+      `;
+
+      if (admins[0]?.id) {
+        await createNotification(
+          admins[0].id,
+          `Order #${orderId} for ${details.product_name} has been deleted.`,
+          "order",
+          orderId,
+        );
+      }
+
+      await createNotification(
+        details.buyer_id,
+        `Your order #${orderId} has been deleted.`,
+        "order",
+        orderId,
+      );
+    }
+
+    return jsonNoStore({ success: true });
+  } catch (e) {
+    console.error("Failed to delete order", e);
+    return jsonNoStore({ error: "Failed to delete order" }, { status: 500 });
+  }
+}

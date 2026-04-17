@@ -5,9 +5,10 @@ import {
   userChannelName,
 } from "@luminbridge/db/client";
 import { Button, Card, EmptyState, Skeleton, cn } from "@luminbridge/ui";
-import React from "react";
-import { ShoppingCart, Download } from "lucide-react";
+import React, { useState } from "react";
+import { ShoppingCart, Download, Eye } from "lucide-react";
 import { Order } from "@luminbridge/types";
+import { OrderDetailsModal } from "@/components/OrderDetailsModal";
 
 interface OrderTableProps {
   orders: Order[];
@@ -15,6 +16,8 @@ interface OrderTableProps {
 }
 
 export const OrderTable = ({ orders, isLoading }: OrderTableProps) => {
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem]">
       <div className="overflow-x-auto custom-scrollbar">
@@ -81,7 +84,8 @@ export const OrderTable = ({ orders, isLoading }: OrderTableProps) => {
               orders.map((o) => (
                 <tr
                   key={o.id}
-                  className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group"
+                  onClick={() => setSelectedOrder(o)}
+                  className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group cursor-pointer"
                 >
                   <td className="p-6 font-mono text-xs text-zinc-500 dark:text-zinc-400">
                     #{o.id}
@@ -129,6 +133,11 @@ export const OrderTable = ({ orders, isLoading }: OrderTableProps) => {
           </tbody>
         </table>
       </div>
+
+      <OrderDetailsModal
+        order={selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
     </Card>
   );
 };

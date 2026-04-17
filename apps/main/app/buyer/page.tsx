@@ -1,4 +1,9 @@
-import { getBuyerCustomOrders, getBuyerOrders, getBuyerProducts, getBuyerProposals } from "@luminbridge/db";
+import {
+  getBuyerCustomOrders,
+  getBuyerOrders,
+  getBuyerProducts,
+  getBuyerProposals,
+} from "@luminbridge/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { User } from "@luminbridge/types";

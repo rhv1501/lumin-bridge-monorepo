@@ -12,6 +12,11 @@ export function useRealtimeData<T>(
   const [data, setData] = useState<T>(initialData);
   const loadingRef = useRef(false);
   const pendingRefreshRef = useRef(false);
+  const fetchDataRef = useRef(fetchData);
+
+  useEffect(() => {
+    fetchDataRef.current = fetchData;
+  }, [fetchData]);
 
   useEffect(() => {
     let disposed = false;
@@ -27,7 +32,7 @@ export function useRealtimeData<T>(
       
       loadingRef.current = true;
       try {
-        const newData = await fetchData();
+        const newData = await fetchDataRef.current();
         if (!disposed) {
           setData(newData);
         }
@@ -99,7 +104,7 @@ export function useRealtimeData<T>(
       try { es?.close(); } catch { }
       try { pusherCleanup?.(); } catch { }
     };
-  }, [userId, resourceName, fetchData]);
+  }, [userId, resourceName]);
 
   return data;
 }

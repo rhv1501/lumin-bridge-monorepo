@@ -8,9 +8,11 @@ import {
   Star,
   FileSpreadsheet,
   Package,
+  Eye,
 } from "lucide-react";
 import { Order, User } from "@luminbridge/types";
 import { ReviewModal } from "./ReviewModal";
+import { OrderDetailsModal } from "@/components/OrderDetailsModal";
 import { toast } from "react-hot-toast";
 
 interface OrderListProps {
@@ -27,6 +29,7 @@ export const OrderList = ({
   onBrowseProducts,
 }: OrderListProps) => {
   const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const handleReviewSubmit = async (rating: number, comment: string) => {
     if (!reviewOrder) return;
@@ -139,7 +142,8 @@ export const OrderList = ({
                 orders.map((o) => (
                   <tr
                     key={o.id}
-                    className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group"
+                    onClick={() => setSelectedOrder(o)}
+                    className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/70 dark:bg-zinc-800/30 transition-colors group cursor-pointer"
                   >
                     <td className="p-6 font-mono text-xs text-zinc-500">
                       #{o.id}
@@ -207,6 +211,11 @@ export const OrderList = ({
           onSubmit={handleReviewSubmit}
         />
       )}
+
+      <OrderDetailsModal
+        order={selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
     </>
   );
 };

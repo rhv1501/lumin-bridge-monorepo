@@ -93,6 +93,7 @@ export interface Order {
   factory_id: number;
   quantity: number;
   total_price?: number;
+  factory_price_cny?: number;
   status: string;
   created_at: string;
   product_name?: string;
